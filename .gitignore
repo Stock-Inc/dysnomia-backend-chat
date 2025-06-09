@@ -1,0 +1,7 @@
+# Project exclude paths
+/target/
+.idea/dataSources
+.idea/shelf
+.idea/workspace.xml
+.vscode
+src/main/resources/dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json

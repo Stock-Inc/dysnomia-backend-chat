@@ -1,0 +1,36 @@
+services:
+  backend:
+    container_name: backend
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=jdbc:postgresql://db:5432/femboy_db
+      - DB_USERNAME=postgres
+      - DB_PASS=passwordpasswd
+      - DB_TOKEN=token
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    container_name: db
+    restart: unless-stopped
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=femboy_db
+      - POSTGRES_PASSWORD=passwordpasswd
+    expose:
+      - 5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "femboy_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
