@@ -1,16 +1,15 @@
 package org.example.backend.services;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.example.backend.models.Message;
 import org.example.backend.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
-@Getter
-@Setter
+@Data
 public class MessageServices {
     private final MessageRepository MessageRepository;
 
@@ -19,7 +18,7 @@ public class MessageServices {
         this.MessageRepository = MessageRepository;
     }
 
-    public List<Message> findLast100Message(){
+    public List<Message> findLast100Message() {
         return MessageRepository.findLast100Message();
     }
 
