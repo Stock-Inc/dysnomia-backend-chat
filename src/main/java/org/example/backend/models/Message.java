@@ -27,12 +27,15 @@ public class Message {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "reply_id")
+    private int reply_id;
+
     @Column(name = "date")
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
 
     public Message(MessageDTO messageDTO) {
         this.name = messageDTO.getName();
         this.message = messageDTO.getMessage();
+        this.reply_id = messageDTO.getReply_id();
     }
-
 }

@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(columnDefinition = "varchar(255)")
+    @Column(name = "role")
     private Role role;
 
     @OneToMany(mappedBy = "user")

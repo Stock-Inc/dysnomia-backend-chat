@@ -25,4 +25,8 @@ public class MessageServices {
     public void save(Message message) {
         MessageRepository.save(message);
     }
+
+    public Message findById(int id) {
+        return MessageRepository.findById(id);
+    }
 }

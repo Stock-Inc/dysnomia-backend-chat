@@ -11,4 +11,6 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     @Query("SELECT m FROM Message m ORDER BY m.id DESC LIMIT 100")
     List<Message> findLast100Message();
+
+    Message findById(int id);
 }
