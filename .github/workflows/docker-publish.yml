@@ -54,6 +54,16 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: Checkout secrets
+        uses: actions/checkout@v4
+        with:
+          repository: stock-inc/dysnomia-backend-secrets
+          token: ${{ secrets.ACCESS_TOKEN }}
+          path: secrets
+
+      - name: Load dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json
+        run: mv secrets/dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json src/main/resources/dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
