@@ -17,11 +17,10 @@ public class MessageDTO {
     @Length(min = 1, message = "The name must be more than 0 characters long.")
     private String message;
 
-    private int reply_id;
+    private int reply_id = 0;
 
-    public MessageDTO(String name, String message, int reply_id) {
+    public MessageDTO(String name, String message){
         this.name = name;
         this.message = message;
-        this.reply_id = reply_id;
     }
 }

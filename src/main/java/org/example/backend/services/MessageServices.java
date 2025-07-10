@@ -22,6 +22,7 @@ public class MessageServices {
         return MessageRepository.findLast100Message();
     }
 
+
     public void save(Message message) {
         MessageRepository.save(message);
     }
