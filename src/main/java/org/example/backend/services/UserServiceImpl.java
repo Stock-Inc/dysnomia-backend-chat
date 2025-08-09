@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElse(null);
-        return user != null;
+        return false;
     }
+
 }

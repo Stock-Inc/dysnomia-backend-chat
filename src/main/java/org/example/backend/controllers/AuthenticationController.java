@@ -32,9 +32,6 @@ public class AuthenticationController {
         if (userService.existsByUsername(registrationDto.getUsername())) {
             return ResponseEntity.badRequest().body("Имя пользователя уже занято");
         }
-        if (userService.existsByEmail(registrationDto.getEmail())) {
-            return ResponseEntity.badRequest().body("Email уже занят");
-        }
 
         authenticationService.register(registrationDto);
 
