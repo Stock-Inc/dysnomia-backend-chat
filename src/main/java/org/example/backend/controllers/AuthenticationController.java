@@ -29,16 +29,13 @@ public class AuthenticationController {
     public ResponseEntity<String> register(
             @RequestBody RegistrationRequestDto registrationDto
     ) {
-        // Проверка наличия пользователя с таким же именем
         if (userService.existsByUsername(registrationDto.getUsername())) {
             return ResponseEntity.badRequest().body("Имя пользователя уже занято");
         }
-        // Проверка наличия пользователя с таким же email
         if (userService.existsByEmail(registrationDto.getEmail())) {
             return ResponseEntity.badRequest().body("Email уже занят");
         }
 
-        // Регистрация нового пользователя
         authenticationService.register(registrationDto);
 
         return ResponseEntity.ok("Регистрация прошла успешно");

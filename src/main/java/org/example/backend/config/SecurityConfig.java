@@ -45,7 +45,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> {
-                    auth.anyRequest().permitAll(); // Разрешаем доступ ко всем запросам без аутентификации
+                    auth.anyRequest().permitAll();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .logout(log -> {
