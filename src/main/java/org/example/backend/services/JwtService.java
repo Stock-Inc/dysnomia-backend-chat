@@ -6,7 +6,6 @@ import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.example.backend.models.User;
 import org.example.backend.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;

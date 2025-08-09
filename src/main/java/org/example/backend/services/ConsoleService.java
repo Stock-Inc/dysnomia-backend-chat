@@ -25,7 +25,7 @@ public class ConsoleService {
             return "Неправильная команда!";
         if (command.equals("картель")) {
             return consoleRepository.findConsoleCommandByCommand(command).getResult() + " " +
-                    + currentTime.getHour() + ":" + currentTime.getMinute();
+                    +currentTime.getHour() + ":" + currentTime.getMinute();
 
         }
         return consoleRepository.findConsoleCommandByCommand(command).getResult();
