@@ -2,11 +2,15 @@ package org.example.backend.services;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.backend.dto.ConsoleCommandDTO;
+import org.example.backend.models.ConsoleCommand;
 import org.example.backend.repositories.ConsoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Getter
@@ -29,5 +33,17 @@ public class ConsoleService {
 
         }
         return consoleRepository.findConsoleCommandByCommand(command).getResult();
+    }
+
+    public List<ConsoleCommandDTO> findAllCommands(){
+        List<ConsoleCommand> listCommands = consoleRepository.findAllCommands(0);
+        List<ConsoleCommandDTO> listCommandsDTO = new ArrayList<>();
+        for (ConsoleCommand consoleCommand : listCommands){
+            ConsoleCommandDTO consoleCommandDTO = new ConsoleCommandDTO();
+            consoleCommandDTO.setCommand(consoleCommand.getCommand());
+            consoleCommandDTO.setResult(consoleCommand.getResult());
+            listCommandsDTO.add(consoleCommandDTO);
+        }
+        return listCommandsDTO;
     }
 }

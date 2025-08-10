@@ -12,7 +12,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>backend</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.5</version>
     <name>backend</name>
     <description>Backend Application</description>
 
