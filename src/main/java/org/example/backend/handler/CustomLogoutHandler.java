@@ -17,6 +17,7 @@ public class CustomLogoutHandler implements LogoutHandler {
         this.tokenRepository = tokenRepository;
     }
 
+
     @Override
     public void logout(HttpServletRequest request,
                        HttpServletResponse response,

@@ -7,7 +7,6 @@ import lombok.*;
 @Table(name = "token_table")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Token {

@@ -36,7 +36,6 @@ public class JwtService {
 
 
     public boolean isValid(String token, UserDetails user) {
-
         String username = extractUsername(token);
 
         boolean isValidToken = tokenRepository.findByAccessToken(token)
@@ -47,9 +46,7 @@ public class JwtService {
                 && isValidToken;
     }
 
-
     public boolean isValidRefresh(String token, User user) {
-
         String username = extractUsername(token);
 
         boolean isValidRefreshToken = tokenRepository.findByRefreshToken(token)
@@ -59,7 +56,6 @@ public class JwtService {
                 && isAccessTokenExpired(token)
                 && isValidRefreshToken;
     }
-
 
     private boolean isAccessTokenExpired(String token) {
         return !extractExpiration(token).before(new Date());
@@ -82,7 +78,6 @@ public class JwtService {
 
 
     private Claims extractAllClaims(String token) {
-
         JwtParserBuilder parser = Jwts.parser();
 
         parser.verifyWith(getSgningKey());
@@ -94,10 +89,8 @@ public class JwtService {
 
 
     public String generateAccessToken(User user) {
-
         return generateToken(user, accessTokenExpiration);
     }
-
 
     public String generateRefreshToken(User user) {
 
@@ -117,7 +110,6 @@ public class JwtService {
 
 
     private SecretKey getSgningKey() {
-
         byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
 
         return Keys.hmacShaKeyFor(keyBytes);

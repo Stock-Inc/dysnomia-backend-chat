@@ -24,12 +24,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByUsername(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
-        return user != null;
+        if (user != null) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean existsByEmail(String email) {
         return false;
     }
-
 }
