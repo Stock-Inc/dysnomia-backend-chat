@@ -10,9 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +37,17 @@ public class MessageController {
     @MessageMapping("/chat")
     @SendTo("/topic/message")
     public Message savePersonMessage(@Payload MessageDTO messageDTO) {
+        Message message = new Message(messageDTO);
+        messageServices.save(message);
+        log.debug("the new message with id = {} has been saved in the db  ", message.getId());
+        firebaseConfig.sendNotification(message.getName(), message.getMessage());
+        log.debug("the notification has been sent");
+        return message;
+    }
+
+    @PostMapping("/save")
+    @ResponseBody
+    public Message savePersonMessage2(@RequestBody MessageDTO messageDTO) {
         Message message = new Message(messageDTO);
         messageServices.save(message);
         log.debug("the new message with id = {} has been saved in the db  ", message.getId());

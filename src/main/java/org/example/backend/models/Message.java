@@ -31,7 +31,7 @@ public class Message {
     private String message;
 
     @Column(name = "reply_id")
-    private int reply_id = 0;
+    private int reply_id;
 
     @Column(name = "date")
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
@@ -39,5 +39,6 @@ public class Message {
     public Message(MessageDTO messageDTO) {
         this.name = messageDTO.getName();
         this.message = messageDTO.getMessage();
+        this.reply_id = messageDTO.getReply_id();
     }
 }
