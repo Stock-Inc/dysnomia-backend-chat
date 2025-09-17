@@ -34,84 +34,83 @@ public class JwtService {
         this.tokenRepository = tokenRepository;
     }
 
-
     public boolean isValid(String token, UserDetails user) {
-        String username = extractUsername(token);
+        try {
+            String username = extractUsername(token);
+            boolean isValidToken = tokenRepository.findByAccessToken(token)
+                    .map(t -> !t.isLoggedOut()).orElse(false);
 
-        boolean isValidToken = tokenRepository.findByAccessToken(token)
-                .map(t -> !t.isLoggedOut()).orElse(false);
-
-        return username.equals(user.getUsername())
-                && isAccessTokenExpired(token)
-                && isValidToken;
+            return username.equals(user.getUsername())
+                    && !isTokenExpired(token)
+                    && isValidToken;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isValidRefresh(String token, User user) {
-        String username = extractUsername(token);
+        try {
+            String username = extractUsername(token);
+            boolean isValidRefreshToken = tokenRepository.findByRefreshToken(token)
+                    .map(t -> !t.isLoggedOut()).orElse(false);
 
-        boolean isValidRefreshToken = tokenRepository.findByRefreshToken(token)
-                .map(t -> !t.isLoggedOut()).orElse(false);
-
-        return username.equals(user.getUsername())
-                && isAccessTokenExpired(token)
-                && isValidRefreshToken;
+            return username.equals(user.getUsername())
+                    && !isTokenExpired(token)
+                    && isValidRefreshToken;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    private boolean isAccessTokenExpired(String token) {
-        return !extractExpiration(token).before(new Date());
+    private boolean isTokenExpired(String token) {
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (Exception e) {
+            return true;
+        }
     }
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
     }
 
-
     private Claims extractAllClaims(String token) {
         JwtParserBuilder parser = Jwts.parser();
-
-        parser.verifyWith(getSgningKey());
-
+        parser.verifyWith(getSigningKey());
         return parser.build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
-
 
     public String generateAccessToken(User user) {
         return generateToken(user, accessTokenExpiration);
     }
 
     public String generateRefreshToken(User user) {
-
         return generateToken(user, refreshTokenExpiration);
     }
-
 
     private String generateToken(User user, long expiryTime) {
         JwtBuilder builder = Jwts.builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiryTime))
-                .signWith(getSgningKey());
+                .signWith(getSigningKey());
 
         return builder.compact();
     }
 
-
-    private SecretKey getSgningKey() {
+    private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
-
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
