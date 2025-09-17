@@ -45,17 +45,6 @@ public class MessageController {
         return message;
     }
 
-    @PostMapping("/save")
-    @ResponseBody
-    public Message savePersonMessage2(@RequestBody MessageDTO messageDTO) {
-        Message message = new Message(messageDTO);
-        messageServices.save(message);
-        log.debug("the new message with id = {} has been saved in the db  ", message.getId());
-        firebaseConfig.sendNotification(message.getName(), message.getMessage());
-        log.debug("the notification has been sent");
-        return message;
-    }
-
     @GetMapping("/message/{id}")
     @ResponseBody
     public Message messageOld(@PathVariable int id) {
