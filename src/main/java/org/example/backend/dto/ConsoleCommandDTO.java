@@ -6,5 +6,5 @@ import lombok.Data;
 public class ConsoleCommandDTO {
     private String command;
 
-    private String result;
+    private String description;
 }

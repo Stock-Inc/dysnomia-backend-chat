@@ -17,4 +17,7 @@ public class ConsoleCommand {
 
     @Column(name = "result")
     private String result;
+
+    @Column(name = "description")
+    private String description;
 }

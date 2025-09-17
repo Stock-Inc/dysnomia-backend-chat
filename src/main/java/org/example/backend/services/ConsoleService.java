@@ -41,7 +41,7 @@ public class ConsoleService {
         for (ConsoleCommand consoleCommand : listCommands){
             ConsoleCommandDTO consoleCommandDTO = new ConsoleCommandDTO();
             consoleCommandDTO.setCommand(consoleCommand.getCommand());
-            consoleCommandDTO.setResult(consoleCommand.getResult());
+            consoleCommandDTO.setDescription(consoleCommand.getDescription());
             listCommandsDTO.add(consoleCommandDTO);
         }
         return listCommandsDTO;
