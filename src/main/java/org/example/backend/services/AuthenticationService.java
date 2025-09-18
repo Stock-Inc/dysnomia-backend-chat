@@ -3,7 +3,6 @@ package org.example.backend.services;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
-import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
 import org.example.backend.models.Role;
 import org.example.backend.models.Token;
@@ -62,7 +61,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponseDto authenticate(LoginRequestDto request) {
+    public AuthenticationResponseDto authenticate(RegistrationRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

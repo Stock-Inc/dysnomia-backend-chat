@@ -38,7 +38,7 @@ public class ConsoleController {
                 .body(consoleService.findConsoleCommandByCommand(command));
     }
 
-    @GetMapping("/allCommands")
+    @GetMapping("/all_commands")
     public List<ConsoleCommandDTO> getAllCommands(){
         return consoleService.findAllCommands();
     }
