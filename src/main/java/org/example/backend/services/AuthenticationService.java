@@ -3,6 +3,7 @@ package org.example.backend.services;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
+import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
 import org.example.backend.models.Role;
 import org.example.backend.models.Token;
@@ -57,11 +58,10 @@ public class AuthenticationService {
 
 
         user = userRepository.save(user);
-
     }
 
 
-    public AuthenticationResponseDto authenticate(RegistrationRequestDto request) {
+    public AuthenticationResponseDto authenticate(LoginRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -88,8 +88,8 @@ public class AuthenticationService {
     private void revokeAllToken(User user) {
         List<Token> validTokens = tokenRepository.findAllAccessTokenByUser(user.getId());
 
-        if(!validTokens.isEmpty()){
-            validTokens.forEach(t ->{
+        if (!validTokens.isEmpty()) {
+            validTokens.forEach(t -> {
                 t.setLoggedOut(true);
             });
         }
@@ -142,4 +142,5 @@ public class AuthenticationService {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
 }

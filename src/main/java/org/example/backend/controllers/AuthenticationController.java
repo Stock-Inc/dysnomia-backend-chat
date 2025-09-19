@@ -4,6 +4,7 @@ package org.example.backend.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
+import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
 import org.example.backend.services.AuthenticationService;
 import org.example.backend.services.UserService;
@@ -23,12 +24,24 @@ public class AuthenticationController {
     }
 
 
+    @PostMapping("/registration")
+    public ResponseEntity<AuthenticationResponseDto> register(
+            @RequestBody RegistrationRequestDto registrationDto
+    ) {
+
+        authenticationService.register(registrationDto);
+
+        LoginRequestDto request = new LoginRequestDto();
+        request.setUsername(registrationDto.getUsername());
+        request.setPassword(registrationDto.getPassword());
+
+        return authenticate(request);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> authenticate(
-            @RequestBody RegistrationRequestDto request
+            @RequestBody LoginRequestDto request
     ) {
-        authenticationService.register(request);
-
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
