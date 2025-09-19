@@ -1,5 +1,6 @@
 package org.example.backend.controllers;
 
+import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
@@ -40,6 +41,8 @@ public class ConsoleController {
 
     @GetMapping("/all_commands")
     public List<ConsoleCommandDTO> getAllCommands(){
+        System.out.println(Jwts.SIG.HS512.key().build());
+
         return consoleService.findAllCommands();
     }
 
