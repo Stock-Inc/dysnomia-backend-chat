@@ -1,5 +1,6 @@
 package org.example.backend.services;
 
+import org.example.backend.dto.UserDTO;
 import org.example.backend.models.User;
 import org.example.backend.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,15 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем " + username + " не найден"));
+    }
+
+    public UserDTO findUsersByUsername(String username) {
+        User user = userRepository.findUsersByUsername(username);
+        UserDTO userDTO = new UserDTO();
+        System.out.println(user);
+        userDTO.setUsername(user.getUsername());
+        userDTO.setRole(String.valueOf(user.getRole()));
+        return userDTO;
     }
 
     @Override
