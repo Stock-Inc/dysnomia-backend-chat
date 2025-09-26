@@ -25,7 +25,7 @@ public class Message {
     private int id;
 
     @Column(name = "name")
-    private String username;
+    private String name;
 
     @Column(name = "message")
     private String message;
@@ -40,7 +40,7 @@ public class Message {
     private int httpCode = 200;
 
     public Message(MessageDTO messageDTO) {
-        this.username = messageDTO.getUsername();
+        this.name = messageDTO.getUsername();
         this.message = messageDTO.getMessage();
         this.reply_id = messageDTO.getReply_id();
     }
