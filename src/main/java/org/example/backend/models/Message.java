@@ -36,11 +36,8 @@ public class Message {
     @Column(name = "date")
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
 
-    @Column(name = "httpCode")
-    private int httpCode = 200;
-
     public Message(MessageDTO messageDTO) {
-        this.name = messageDTO.getUsername();
+        this.name = messageDTO.getName();
         this.message = messageDTO.getMessage();
         this.reply_id = messageDTO.getReply_id();
     }
