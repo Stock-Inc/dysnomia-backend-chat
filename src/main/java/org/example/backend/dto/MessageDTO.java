@@ -2,10 +2,12 @@ package org.example.backend.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-@Data
+@Getter
+@Setter
 @Schema(name = "Модель, получаемая после сообщения пользователя")
 public class MessageDTO {
     private String username;

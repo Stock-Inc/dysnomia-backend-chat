@@ -1,6 +1,7 @@
 package org.example.backend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.example.backend.config.FirebaseConfig;
@@ -9,14 +10,12 @@ import org.example.backend.models.Message;
 import org.example.backend.services.JwtService;
 import org.example.backend.services.MessageServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -45,15 +44,15 @@ public class MessageController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/message")
-    public Message savePersonMessage(@Payload MessageDTO messageDTO, HttpServletRequest request) {
+    public Message savePersonMessage(@Payload MessageDTO messageDTO, @NonNull HttpServletRequest request) {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String token = authorizationHeader.substring(7);
         String username = jwtService.extractUsername(token);
         Message message = new Message(messageDTO);
-        if (message.getName().equals(username)) {
+        if (messageDTO.getUsername().equals(username)) {
             messageServices.save(message);
             log.debug("the new message with id = {} has been saved in the db  ", message.getId());
-            firebaseConfig.sendNotification(message.getName(), message.getMessage());
+            firebaseConfig.sendNotification(message.getUsername(), message.getMessage());
             log.debug("the notification has been sent");
             message.setHttpCode(200);
             return message;
