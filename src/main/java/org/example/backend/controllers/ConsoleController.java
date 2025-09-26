@@ -1,6 +1,5 @@
 package org.example.backend.controllers;
 
-import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Data
@@ -40,9 +38,7 @@ public class ConsoleController {
     }
 
     @GetMapping("/all_commands")
-    public List<ConsoleCommandDTO> getAllCommands(){
-        System.out.println(Jwts.SIG.HS512.key().build());
-
+    public List<ConsoleCommandDTO> getAllCommands() {
         return consoleService.findAllCommands();
     }
 
