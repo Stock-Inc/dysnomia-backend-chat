@@ -36,7 +36,7 @@ public class ConsoleService {
     }
 
     public List<ConsoleCommandDTO> findAllCommands(){
-        List<ConsoleCommand> listCommands = consoleRepository.findAllCommands(0);
+        List<ConsoleCommand> listCommands = consoleRepository.findAllCommands();
         List<ConsoleCommandDTO> listCommandsDTO = new ArrayList<>();
         for (ConsoleCommand consoleCommand : listCommands){
             ConsoleCommandDTO consoleCommandDTO = new ConsoleCommandDTO();

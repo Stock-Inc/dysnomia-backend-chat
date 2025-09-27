@@ -10,11 +10,11 @@ import java.util.List;
 
 @Service
 @Data
-public class MessageServices {
+public class MessageService {
     private final MessageRepository MessageRepository;
 
     @Autowired
-    public MessageServices(MessageRepository MessageRepository) {
+    public MessageService(MessageRepository MessageRepository) {
         this.MessageRepository = MessageRepository;
     }
 
