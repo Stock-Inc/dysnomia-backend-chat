@@ -47,17 +47,26 @@ public class AuthenticationService {
         this.tokenRepository = tokenRepository;
     }
 
-    public void register(RegistrationRequestDto request) {
+    public AuthenticationResponseDto register(RegistrationRequestDto request) {
 
         User user = new User();
 
         user.setUsername(request.getUsername());
-        user.setEmail("dysnomia@test.ru");
+        user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
 
-
         user = userRepository.save(user);
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+
+        revokeAllToken(user);
+
+        saveUserToken(accessToken, refreshToken, user);
+
+        return new AuthenticationResponseDto(accessToken, refreshToken);
     }
 
 
@@ -72,16 +81,11 @@ public class AuthenticationService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
 
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        List<Token> tokens = tokenRepository.findTokensByUserId(user.getId());
 
-
-        revokeAllToken(user);
-
-        saveUserToken(accessToken, refreshToken, user);
-
-
-        return new AuthenticationResponseDto(accessToken, refreshToken);
+        AuthenticationResponseDto authenticationResponseDto =
+                new AuthenticationResponseDto(tokens.getLast().getAccessToken(),  tokens.getLast().getRefreshToken());
+        return authenticationResponseDto;
     }
 
 

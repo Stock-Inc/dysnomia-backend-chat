@@ -29,13 +29,7 @@ public class AuthenticationController {
             @RequestBody RegistrationRequestDto registrationDto
     ) {
 
-        authenticationService.register(registrationDto);
-
-        LoginRequestDto request = new LoginRequestDto();
-        request.setUsername(registrationDto.getUsername());
-        request.setPassword(registrationDto.getPassword());
-
-        return authenticate(request);
+        return ResponseEntity.ok(authenticationService.register(registrationDto));
     }
 
     @PostMapping("/login")
