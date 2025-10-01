@@ -28,7 +28,7 @@ public class MessageController {
     }
 
     @MessageMapping("/history")
-    @SendTo("/topic/histor  y")
+    @SendTo("/topic/history")
     public List<Message> message() {
         log.info("the last 100 messages has been sent");
         return messageService.findLast100Message();
