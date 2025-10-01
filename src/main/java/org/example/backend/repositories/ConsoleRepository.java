@@ -11,5 +11,6 @@ import java.util.List;
 public interface ConsoleRepository extends JpaRepository<ConsoleCommand, Integer> {
     ConsoleCommand findConsoleCommandByCommand(String command);
 
-    List<ConsoleCommand> findAllCommands();
+    @Query("SELECT c FROM ConsoleCommand c WHERE c.id > 0")
+    List<ConsoleCommand> findAllCommands(int id);
 }
