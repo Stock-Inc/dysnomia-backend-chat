@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Getter
@@ -30,7 +31,12 @@ public class ConsoleService {
         if (command.equals("картель")) {
             return consoleRepository.findConsoleCommandByCommand(command).getResult() + " " +
                     +currentTime.getHour() + ":" + currentTime.getMinute();
-
+        }
+        if (command.startsWith("wheel")){
+            command = command.substring(5);
+            List<String> commands = List.of(command.split(","));
+            int randomNumber = new Random().nextInt(commands.size());
+            return commands.get(randomNumber);
         }
         return consoleRepository.findConsoleCommandByCommand(command).getResult();
     }
