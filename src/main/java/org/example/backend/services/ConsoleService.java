@@ -28,8 +28,7 @@ public class ConsoleService {
         if (command.isEmpty() || consoleRepository.findConsoleCommandByCommand(command) == null)
             return "Неправильная команда!";
         if (command.equals("картель")) {
-            return consoleRepository.findConsoleCommandByCommand(command).getResult() + " " +
-                    +currentTime.getHour() + ":" + currentTime.getMinute();
+            return STR."\{consoleRepository.findConsoleCommandByCommand(command).getResult()} \{+currentTime.getHour()}:\{currentTime.getMinute()}";
 
         }
         return consoleRepository.findConsoleCommandByCommand(command).getResult();
