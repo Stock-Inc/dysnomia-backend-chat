@@ -8,10 +8,13 @@ import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
 import org.example.backend.services.AuthenticationService;
 import org.example.backend.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Nullable;
 
 @RestController
 public class AuthenticationController {
@@ -25,9 +28,18 @@ public class AuthenticationController {
 
 
     @PostMapping("/registration")
-    public ResponseEntity<AuthenticationResponseDto> register(
+    public ResponseEntity<?> register(
             @RequestBody RegistrationRequestDto registrationDto
     ) {
+        if (userService.existsByUsername(registrationDto.getUsername())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        } else if (userService.existsByEmail(registrationDto.getEmail())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
 
         return ResponseEntity.ok(authenticationService.register(registrationDto));
     }
