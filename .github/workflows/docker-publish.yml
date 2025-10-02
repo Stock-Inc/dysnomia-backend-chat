@@ -61,8 +61,8 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           path: secrets
 
-      - name: Load dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json
-        run: mv secrets/dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json src/main/resources/dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json
+      - name: Load firebase configs
+        run: mv secrets/* src/main/resources/
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
