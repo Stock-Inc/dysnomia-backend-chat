@@ -79,6 +79,7 @@ public class FirebaseConfig {
         try {
             FirebaseMessaging.getInstance().send(message);
         } catch (FirebaseMessagingException e) {
-            throw 
+            throw new RuntimeException(e);
+        }
     }
 }

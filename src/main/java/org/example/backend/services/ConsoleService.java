@@ -26,17 +26,17 @@ public class ConsoleService {
 
     public String findConsoleCommandByCommand(String command) {
         LocalTime currentTime = LocalTime.now();
-        if (command.isEmpty() || consoleRepository.findConsoleCommandByCommand(command) == null)
-            return "Неправильная команда!";
-        if (command.equals("картель")) {
-            return consoleRepository.findConsoleCommandByCommand(command).getResult() + " " +
-                    +currentTime.getHour() + ":" + currentTime.getMinute();
-        }
         if (command.startsWith("wheel")){
             command = command.substring(5);
             List<String> commands = List.of(command.split(","));
             int randomNumber = new Random().nextInt(commands.size());
             return commands.get(randomNumber);
+        }
+        if (command.isEmpty() || consoleRepository.findConsoleCommandByCommand(command) == null)
+            return "Неправильная команда!";
+        if (command.equals("картель")) {
+            return consoleRepository.findConsoleCommandByCommand(command).getResult() + " " +
+                    +currentTime.getHour() + ":" + currentTime.getMinute();
         }
         return consoleRepository.findConsoleCommandByCommand(command).getResult();
     }
