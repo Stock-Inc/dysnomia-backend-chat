@@ -1,6 +1,13 @@
 package org.example.backend.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
@@ -14,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "Auth Controller", description = "for auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
@@ -26,10 +34,9 @@ public class AuthenticationController {
 
     @PostMapping("/registration")
     public ResponseEntity<AuthenticationResponseDto> register(
-            @RequestBody RegistrationRequestDto registrationDto
-    ) {
-
-        return ResponseEntity.ok(authenticationService.register(registrationDto));
+            @RequestBody RegistrationRequestDto registrationDto) {
+        AuthenticationResponseDto registrationRequestDto = authenticationService.register(registrationDto);
+        return ResponseEntity.ok(registrationRequestDto);
     }
 
     @PostMapping("/login")

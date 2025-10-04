@@ -1,9 +1,7 @@
 package org.example.backend.services;
 
-import org.assertj.core.api.Assertions;
 import org.example.backend.models.Message;
 import org.example.backend.repositories.MessageRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,8 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TestMessageService {
@@ -41,7 +39,7 @@ public class TestMessageService {
     }
 
     @Test
-    public void testFindLast100Message(){
+    public void testFindLast100Message() {
         List<Message> list = List.of(message);
         when(messageRepository.findLast100Message())
                 .thenReturn(list);

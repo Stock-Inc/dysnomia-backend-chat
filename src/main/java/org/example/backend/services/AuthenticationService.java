@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
+import org.example.backend.exceptions.UsernameAlreadyExistsException;
 import org.example.backend.models.Role;
 import org.example.backend.models.Token;
 import org.example.backend.models.User;
@@ -51,10 +52,15 @@ public class AuthenticationService {
 
         User user = new User();
 
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new UsernameAlreadyExistsException(request.getUsername());
+        }
+
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
+
 
         user = userRepository.save(user);
 
