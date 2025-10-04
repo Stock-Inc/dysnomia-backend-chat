@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.tokens WHERE u.username = :username")
-    UserDTO findUsersByUsername(String username);
+    User findUsersByUsername(String username);
 }

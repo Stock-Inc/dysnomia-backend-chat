@@ -31,6 +31,14 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+    public UserDTO findUsersByUsername(String username) {
+        User user = userRepository.findUsersByUsername(username);
+        UserDTO userDTO = new UserDTO();
+        System.out.println(user);
+        userDTO.setUsername(user.getUsername());
+        userDTO.setRole(String.valueOf(user.getRole()));
+        return userDTO;
+    }
 
     @Override
     public boolean existsByEmail(String email) {

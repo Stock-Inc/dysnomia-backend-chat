@@ -26,6 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{username}")
-    public void getUser(@PathVariable String username, HttpServletRequest request) {
+    public UserDTO getUser(@PathVariable String username) {
+        return userService.findUsersByUsername(username);
     }
 }
