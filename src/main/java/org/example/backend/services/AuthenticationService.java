@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
+import org.example.backend.exceptions.UsernameAlreadyExistsException;
 import org.example.backend.models.Role;
 import org.example.backend.models.Token;
 import org.example.backend.models.User;
@@ -51,10 +52,15 @@ public class AuthenticationService {
 
         User user = new User();
 
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new UsernameAlreadyExistsException(request.getUsername());
+        }
+
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
+
 
         user = userRepository.save(user);
 
@@ -83,9 +89,10 @@ public class AuthenticationService {
 
         List<Token> tokens = tokenRepository.findTokensByUserId(user.getId());
 
-        AuthenticationResponseDto authenticationResponseDto =
-                new AuthenticationResponseDto(tokens.getLast().getAccessToken(),  tokens.getLast().getRefreshToken());
-        return authenticationResponseDto;
+        return new AuthenticationResponseDto(
+                tokens.get(tokens.size() - 1).getAccessToken(),
+                tokens.get(tokens.size() - 1).getRefreshToken()
+        );
     }
 
 
@@ -114,6 +121,7 @@ public class AuthenticationService {
 
         tokenRepository.save(token);
     }
+
 
     public ResponseEntity<AuthenticationResponseDto> refreshToken(
             HttpServletRequest request,

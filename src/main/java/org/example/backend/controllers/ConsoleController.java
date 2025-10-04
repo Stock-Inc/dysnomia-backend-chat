@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Data
 @Tag(name = "Console Controller", description = "Консоль")
 public class ConsoleController {
     private final ConsoleService consoleService;
