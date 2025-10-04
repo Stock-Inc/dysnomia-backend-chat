@@ -45,7 +45,7 @@ public class JwtService {
                 .map(t -> !t.isLoggedOut()).orElse(false);
 
         return username.equals(user.getUsername())
-                && isAccessTokenExpired(token)
+                && !isAccessTokenExpired(token)
                 && isValidToken;
     }
 

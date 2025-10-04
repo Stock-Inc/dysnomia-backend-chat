@@ -83,9 +83,10 @@ public class AuthenticationService {
 
         List<Token> tokens = tokenRepository.findTokensByUserId(user.getId());
 
-        AuthenticationResponseDto authenticationResponseDto =
-                new AuthenticationResponseDto(tokens.getLast().getAccessToken(),  tokens.getLast().getRefreshToken());
-        return authenticationResponseDto;
+        return new AuthenticationResponseDto(
+                tokens.get(tokens.size() - 1).getAccessToken(),
+                tokens.get(tokens.size() - 1).getRefreshToken()
+        );
     }
 
 
@@ -114,6 +115,7 @@ public class AuthenticationService {
 
         tokenRepository.save(token);
     }
+
 
     public ResponseEntity<AuthenticationResponseDto> refreshToken(
             HttpServletRequest request,

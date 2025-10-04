@@ -6,4 +6,4 @@
 .vscode
 src/main/resources/dysnomia-chat-firebase-adminsdk-fbsvc-b0d5c4707c.json
 src/main/resources/storage-vladev-firebase-adminsdk-fbsvc-951d3c50a1.json
-application.log
+application.log.*

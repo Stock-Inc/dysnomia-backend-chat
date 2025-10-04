@@ -82,49 +82,4 @@ public class FirebaseConfig {
             throw new RuntimeException(e);
         }
     }
-
-    public void upload() {
-        if (FirebaseApp.getApps().isEmpty()) {
-            initializeSecondApp();
-        }
-        try {
-            InputStream credentials = new ClassPathResource("storage-vladev-firebase-adminsdk-fbsvc-951d3c50a1.json").getInputStream();
-            Storage storage = StorageOptions.newBuilder()
-                    .setCredentials(GoogleCredentials.fromStream(credentials))
-                    .setProjectId("storage-vladev")
-                    .build()
-                    .getService();
-
-            BlobId blobId = BlobId.of("storage-vladev.appspot.com", "file.jpg");
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-
-            byte[] fileContent = Files.readAllBytes(Path.of("C:\\Users\\bogda\\IdeaProjects\\dysnomia-backend-chat\\src\\main\\resources\\img.jpg"));
-            storage.create(blobInfo, fileContent);
-
-        } catch (IOException e) {
-            throw new RuntimeException("File upload failed", e);
-        }
-    }
-
-    public void download() {
-        if (FirebaseApp.getApps().isEmpty()) {
-            initializeSecondApp();
-        }
-        try {
-            InputStream credentials = new ClassPathResource("storage-vladev-firebase-adminsdk-fbsvc-951d3c50a1.json").getInputStream();
-            Storage storage = StorageOptions.newBuilder()
-                    .setCredentials(GoogleCredentials.fromStream(credentials))
-                    .setProjectId("storage-vladev")
-                    .build()
-                    .getService();
-            StorageOptions storageOptions = StorageOptions.newBuilder().setProjectId("storage-vladev")
-                    .build();
-            storage.downloadTo(BlobId.of("storage-vladev.appspot.com", "file.jpg")
-                    , Paths.get("file.jpg"));
-
-
-        } catch (IOException e) {
-            throw new RuntimeException("File upload failed", e);
-        }
-    }
 }
