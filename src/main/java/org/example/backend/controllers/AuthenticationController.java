@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "Auth Controller", description = "for auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
@@ -32,7 +31,7 @@ public class AuthenticationController {
     }
 
 
-    @PostMapping("/registration")
+    @PostMapping("/signup")
     public ResponseEntity<AuthenticationResponseDto> register(
             @RequestBody RegistrationRequestDto registrationDto) {
         AuthenticationResponseDto registrationRequestDto = authenticationService.register(registrationDto);
