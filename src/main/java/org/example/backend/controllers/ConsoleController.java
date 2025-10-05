@@ -1,9 +1,7 @@
 package org.example.backend.controllers;
 
-import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Data;
 import org.example.backend.dto.ConsoleCommandDTO;
 import org.example.backend.services.ConsoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Tag(name = "Console Controller", description = "Консоль")
@@ -39,7 +36,7 @@ public class ConsoleController {
     }
 
     @GetMapping("/all_commands")
-    public List<ConsoleCommandDTO> getAllCommands(){
+    public List<ConsoleCommandDTO> getAllCommands() {
 
         return consoleService.findAllCommands();
     }

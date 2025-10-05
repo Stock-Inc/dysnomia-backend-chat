@@ -135,9 +135,7 @@ public class JwtService {
             throw new HeaderIsInvalidException();
         }
 
-        String token = authHeader.substring(7);
-
-        return extractUsername(token);
+        return authHeader.substring(7);
     }
 
     public void validateAccessToken(String username, HttpServletRequest request) {

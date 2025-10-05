@@ -1,9 +1,6 @@
 package org.example.backend.handler;
 
-import org.example.backend.exceptions.EmailAlreadyExistsException;
-import org.example.backend.exceptions.HeaderIsInvalidException;
-import org.example.backend.exceptions.UsernameAlreadyExistsException;
-import org.example.backend.exceptions.UsernameNotEqualsToken;
+import org.example.backend.exceptions.*;
 import org.example.backend.models.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +11,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthExceptionHandler {
 
-    @ExceptionHandler({UsernameAlreadyExistsException.class,
-            EmailAlreadyExistsException.class})
-    public ResponseEntity handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<?> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        ErrorResponse errorResponse = ErrorResponse
+                .builder().errorMessage(ex.getMessage()).build();
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<?> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();
         return ResponseEntity
@@ -44,6 +49,15 @@ public class AuthExceptionHandler {
 
     @ExceptionHandler(HeaderIsInvalidException.class)
     public ResponseEntity<?> handleHeaderIsInvalidException(HeaderIsInvalidException ex) {
+        ErrorResponse errorResponse = ErrorResponse
+                .builder().errorMessage("Invalid header").build();
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(UserPasswordNotMatch.class)
+    public ResponseEntity<?> handleUserPasswordNotMatch(UserPasswordNotMatch ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage("Invalid header").build();
         return ResponseEntity
