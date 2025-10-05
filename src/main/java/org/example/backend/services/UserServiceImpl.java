@@ -1,5 +1,6 @@
 package org.example.backend.services;
 
+import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.dto.UserDTO;
 import org.example.backend.models.User;
 import org.example.backend.repositories.UserRepository;
@@ -47,5 +48,12 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    public void updateProfile(EditUserProfileDTO userDTO, String username) {
+        User user = userRepository.findUsersByUsername(username);
+        user.setDisplayName(userDTO.getDisplay_name());
+        user.setBio(userDTO.getBio());
+        userRepository.save(user);
     }
 }

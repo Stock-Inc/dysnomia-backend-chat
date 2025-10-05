@@ -40,7 +40,6 @@ public class ConsoleController {
 
     @GetMapping("/all_commands")
     public List<ConsoleCommandDTO> getAllCommands(){
-        System.out.println(Jwts.SIG.HS512.key().build());
 
         return consoleService.findAllCommands();
     }

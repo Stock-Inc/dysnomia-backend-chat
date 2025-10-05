@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
+import org.example.backend.exceptions.EmailAlreadyExistsException;
 import org.example.backend.exceptions.UsernameAlreadyExistsException;
+import org.example.backend.models.ErrorResponse;
 import org.example.backend.models.Role;
 import org.example.backend.models.Token;
 import org.example.backend.models.User;
@@ -54,6 +56,9 @@ public class AuthenticationService {
 
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException(request.getUsername());
+        }
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException(request.getEmail());
         }
 
         user.setUsername(request.getUsername());
@@ -123,14 +128,15 @@ public class AuthenticationService {
     }
 
 
-    public ResponseEntity<AuthenticationResponseDto> refreshToken(
+    public ResponseEntity<?> refreshToken(
             HttpServletRequest request,
             HttpServletResponse response) {
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            ErrorResponse errorResponse = ErrorResponse.builder().errorMessage("Invalid token").build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
 
         String token = authorizationHeader.substring(7);

@@ -5,23 +5,25 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecretJwk;
+import jakarta.servlet.http.HttpServletRequest;
+import org.example.backend.exceptions.HeaderIsInvalidException;
+import org.example.backend.exceptions.UsernameNotEqualsToken;
 import org.example.backend.models.User;
 import org.example.backend.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
+    private final UserServiceImpl userServiceImpl;
     @Value("${token.signing.key}")
     private String secretKey;
 
@@ -33,8 +35,9 @@ public class JwtService {
 
     private final TokenRepository tokenRepository;
 
-    public JwtService(TokenRepository tokenRepository) {
+    public JwtService(TokenRepository tokenRepository, UserServiceImpl userServiceImpl) {
         this.tokenRepository = tokenRepository;
+        this.userServiceImpl = userServiceImpl;
     }
 
     public boolean isValid(String token, UserDetails user) {
@@ -123,5 +126,31 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
 
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String extractUsernameByToken(HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new HeaderIsInvalidException();
+        }
+
+        String token = authHeader.substring(7);
+
+        return extractUsername(token);
+    }
+
+    public void validateAccessToken(String username, HttpServletRequest request) {
+
+        String token = extractUsernameByToken(request);
+
+        if (!userServiceImpl.existsByUsername(username)) {
+            throw new UsernameNotFoundException("Username not found");
+        }
+
+        if (!extractUsername(token).equals(username)) {
+            throw new UsernameNotEqualsToken();
+        }
+
     }
 }

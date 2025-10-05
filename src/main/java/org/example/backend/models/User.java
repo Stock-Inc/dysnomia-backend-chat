@@ -59,7 +59,7 @@ public class User implements UserDetails {
     @Size(max = 255)
     private String profileImage;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Token> tokens;
 
 

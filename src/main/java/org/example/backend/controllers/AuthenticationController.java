@@ -40,16 +40,15 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity <AuthenticationResponseDto> authenticate(
-            @RequestBody LoginRequestDto request
-    ) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+            @RequestBody LoginRequestDto request) {
+        AuthenticationResponseDto authenticationResponseDto = authenticationService.authenticate(request);
+        return ResponseEntity.ok(authenticationResponseDto);
     }
 
     @PostMapping("/refresh_token")
-    public ResponseEntity<AuthenticationResponseDto> refreshToken(
+    public ResponseEntity<?> refreshToken(
             HttpServletRequest request,
-            HttpServletResponse response
-    ) {
+            HttpServletResponse response) {
         return authenticationService.refreshToken(request, response);
     }
 }
