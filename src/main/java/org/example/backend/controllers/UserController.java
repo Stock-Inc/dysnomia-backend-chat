@@ -1,14 +1,15 @@
 package org.example.backend.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.example.backend.dto.ChangeUserPasswordDTO;
 import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.services.JwtService;
 import org.example.backend.services.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "User Controller", description = "controller for user profile")
 @RestController
 public class UserController {
     private final UserServiceImpl userService;
@@ -19,8 +20,10 @@ public class UserController {
         this.jwtService = jwtService;
     }
 
+    @Tag(name = "get user inform", description = "all information about user")
     @GetMapping("/user/{username}")
-    public ResponseEntity<?> getUser(@PathVariable String username
+    public ResponseEntity<?> getUser(
+            @PathVariable String username
             , HttpServletRequest request) {
         jwtService.validateAccessToken(username, request);
         return ResponseEntity.ok(userService.findUsersByUsername(username));
