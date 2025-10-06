@@ -55,10 +55,10 @@ public class AuthenticationService {
         User user = new User();
 
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new UsernameAlreadyExistsException(request.getUsername());
+            throw new UsernameAlreadyExistsException();
         }
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new EmailAlreadyExistsException(request.getEmail());
+            throw new EmailAlreadyExistsException();
         }
 
         user.setUsername(request.getUsername());

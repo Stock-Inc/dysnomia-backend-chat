@@ -17,7 +17,6 @@ import java.time.ZoneOffset;
 @Builder
 @Entity
 @Table(name = "message")
-@Schema(name = "Модель, записываемая в бд")
 public class Message {
     @Id
     @Column(name = "id")

@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class AuthExceptionHandler {
+public class ExceptionsHandler {
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<?> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);
     }
 
@@ -25,7 +25,7 @@ public class AuthExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);
     }
 
@@ -62,6 +62,15 @@ public class AuthExceptionHandler {
                 .builder().errorMessage("Invalid header").build();
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(UserNotExists.class)
+    public ResponseEntity<?> handleUserNotExists(UserNotExists ex) {
+        ErrorResponse errorResponse = ErrorResponse
+                .builder().errorMessage("User not exists").build();
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
     }
 }

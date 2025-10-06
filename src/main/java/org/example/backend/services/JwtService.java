@@ -8,12 +8,12 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.backend.exceptions.HeaderIsInvalidException;
+import org.example.backend.exceptions.UserNotExists;
 import org.example.backend.exceptions.UsernameNotEqualsToken;
 import org.example.backend.models.User;
 import org.example.backend.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -128,7 +128,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String extractUsernameByToken(HttpServletRequest request){
+    public String extractUsernameByToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -143,7 +143,7 @@ public class JwtService {
         String token = extractUsernameByToken(request);
 
         if (!userServiceImpl.existsByUsername(username)) {
-            throw new UsernameNotFoundException("Username not found");
+            throw new UserNotExists();
         }
 
         if (!extractUsername(token).equals(username)) {

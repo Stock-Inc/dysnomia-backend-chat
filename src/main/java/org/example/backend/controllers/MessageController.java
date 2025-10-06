@@ -1,5 +1,11 @@
 package org.example.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.example.backend.config.FirebaseConfig;
 import org.example.backend.dto.MessageDTO;
@@ -18,6 +24,10 @@ import java.util.List;
 
 @Controller
 @Slf4j
+@Tag(
+        name = "Message Management",
+        description = "WebSocket and REST operations for chat messages and notifications"
+)
 public class MessageController {
 
     private final MessageService messageService;
@@ -29,6 +39,10 @@ public class MessageController {
         this.firebaseConfig = firebaseConfig;
     }
 
+    @Operation(
+            summary = "Get message history via WebSocket",
+            description = "Retrieve last 100 messages through WebSocket connection"
+    )
     @MessageMapping("/history")
     @SendTo("/topic/history")
     public List<Message> message() {
@@ -36,6 +50,10 @@ public class MessageController {
         return messageService.findLast100Message();
     }
 
+    @Operation(
+            summary = "Send chat message via WebSocket",
+            description = "Save new chat message and broadcast to all subscribers with Firebase notification"
+    )
     @MessageMapping("/chat")
     @SendTo("/topic/message")
     public Message savePersonMessage(@Payload MessageDTO messageDTO) {
@@ -47,9 +65,31 @@ public class MessageController {
         return message;
     }
 
+    @Operation(
+            summary = "Get message by ID",
+            description = "Retrieve specific message by its unique identifier"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Message found and returned",
+            content = @Content(
+                    schema = @Schema(implementation = Message.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Message not found",
+            content = @Content(schema = @Schema(hidden = true))
+    )
     @GetMapping("/message/{id}")
     @ResponseBody
-    public Message messageOld(@PathVariable int id) {
+    public Message messageOld(
+            @Parameter(
+                    description = "Message ID",
+                    required = true,
+                    example = "123"
+            )
+            @PathVariable int id) {
         return messageService.findById(id);
     }
 }
