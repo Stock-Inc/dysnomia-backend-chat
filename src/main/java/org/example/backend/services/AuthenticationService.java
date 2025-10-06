@@ -129,8 +129,7 @@ public class AuthenticationService {
 
 
     public ResponseEntity<?> refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response) {
+            HttpServletRequest request) {
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
