@@ -65,14 +65,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-//    public void changePassword(ChangeUserPasswordDTO userDTO, String username) {
-//        User user = userRepository.findUsersByUsername(username);
-//
-//        if (!passwordEncoder.matches(userDTO.getCurrent_password(), user.getPassword())) {
-//            throw new UserPasswordNotMatch();
-//        }
-//
-//        user.setPassword(passwordEncoder.encode(userDTO.getNew_password()));
-//        userRepository.save(user);
-//    }
+    public void changePassword(ChangeUserPasswordDTO userDTO, String username) {
+        User user = userRepository.findUsersByUsername(username);
+
+        if (!passwordEncoder.matches(userDTO.getCurrent_password(), user.getPassword())) {
+            throw new UserPasswordNotMatch();
+        }
+
+        user.setPassword(passwordEncoder.encode(userDTO.getNew_password()));
+        userRepository.save(user);
+    }
 }

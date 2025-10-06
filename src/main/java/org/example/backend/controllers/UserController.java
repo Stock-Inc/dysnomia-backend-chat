@@ -3,6 +3,7 @@ package org.example.backend.controllers;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.example.backend.dto.ChangeUserPasswordDTO;
 import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.services.JwtService;
 import org.example.backend.services.UserServiceImpl;
@@ -38,10 +39,12 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/profile/change_password")
-//    public ResponseEntity<?> changePassword(@RequestBody @Valid ChangeUserPasswordDTO userDTO,
-//                                            HttpServletRequest request) {
-//        userService.changePassword(userDTO, jwtService.extractUsernameByToken(request));
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/profile/change_password")
+    public ResponseEntity<?> changePassword(@RequestBody @Valid ChangeUserPasswordDTO userDTO,
+                                            HttpServletRequest request) {
+        String token = jwtService.extractUsernameByToken(request);
+        String username = jwtService.extractUsername(token);
+        userService.changePassword(userDTO, username);
+        return ResponseEntity.ok().build();
+    }
 }
