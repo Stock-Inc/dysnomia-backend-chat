@@ -66,7 +66,7 @@ public class UserController {
             @PathVariable String username,
             HttpServletRequest request) {
         jwtService.validateAccessToken(username, request);
-        return ResponseEntity.ok(userService.findUsersByUsername(username));
+        return ResponseEntity.ok(userService.findUserInfo(username));
     }
 
     @Operation(

@@ -8,8 +8,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.backend.exceptions.HeaderIsInvalidException;
-import org.example.backend.exceptions.UserNotExists;
-import org.example.backend.exceptions.UsernameNotEqualsToken;
+import org.example.backend.exceptions.TokenInvalidException;
+import org.example.backend.exceptions.UserNotExistsException;
+import org.example.backend.exceptions.UsernameNotEqualsTokenException;
 import org.example.backend.models.User;
 import org.example.backend.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +72,11 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        try {
+            return extractClaim(token, Claims::getExpiration);
+        } catch (Exception ex) {
+            throw new TokenInvalidException();
+        }
     }
 
 
@@ -81,22 +86,27 @@ public class JwtService {
 
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
-        Claims claims = extractAllClaims(token);
-        return resolver.apply(claims);
+        try {
+            Claims claims = extractAllClaims(token);
+            return resolver.apply(claims);
+        } catch (Exception ex) {
+            throw new TokenInvalidException();
+        }
     }
-
 
     private Claims extractAllClaims(String token) {
+        try {
+            JwtParserBuilder parser = Jwts.parser();
 
-        JwtParserBuilder parser = Jwts.parser();
+            parser.verifyWith(getSgningKey());
 
-        parser.verifyWith(getSgningKey());
-
-        return parser.build()
-                .parseSignedClaims(token)
-                .getPayload();
+            return parser.build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (Exception ex) {
+            throw new TokenInvalidException();
+        }
     }
-
 
     public String generateAccessToken(User user) {
 
@@ -143,11 +153,11 @@ public class JwtService {
         String token = extractUsernameByToken(request);
 
         if (!userServiceImpl.existsByUsername(username)) {
-            throw new UserNotExists();
+            throw new UserNotExistsException();
         }
 
         if (!extractUsername(token).equals(username)) {
-            throw new UsernameNotEqualsToken();
+            throw new UsernameNotEqualsTokenException();
         }
 
     }
