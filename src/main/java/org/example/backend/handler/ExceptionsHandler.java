@@ -20,7 +20,7 @@ public class ExceptionsHandler {
                                 UserPasswordNotMatchException.class,
                                 TokenInvalidException.class,
                         })
-    public ResponseEntity<?> handleUsernameAlreadyExists(RuntimeException ex) {
+    public ResponseEntity<ErrorResponse> handleUsernameAlreadyExists(RuntimeException ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();
         return ResponseEntity
@@ -31,7 +31,16 @@ public class ExceptionsHandler {
     @ExceptionHandler(exception = {
             UsernameNotEqualsTokenException.class,
             UserNotExistsException.class})
-    public ResponseEntity<?> handleUsernameIsNotEqualsToken(RuntimeException ex) {
+    public ResponseEntity<ErrorResponse> handleUsernameIsNotEqualsToken(RuntimeException ex) {
+        ErrorResponse errorResponse = ErrorResponse
+                .builder().errorMessage(ex.getMessage()).build();
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();
         return ResponseEntity
