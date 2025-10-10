@@ -6,6 +6,7 @@ import org.example.backend.dto.UserDTO;
 import org.example.backend.exceptions.UserPasswordNotMatchException;
 import org.example.backend.models.User;
 import org.example.backend.repositories.UserRepository;
+import org.example.backend.repositories.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
