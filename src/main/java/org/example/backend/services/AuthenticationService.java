@@ -156,7 +156,7 @@ public class AuthenticationService {
             return new ResponseEntity<>(new AuthenticationResponseDto(accessToken, refreshToken), HttpStatus.OK);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("It isn't an access token");
     }
 
 }

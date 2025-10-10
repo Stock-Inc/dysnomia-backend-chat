@@ -30,7 +30,10 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(exception = {
             UsernameNotEqualsTokenException.class,
-            UserNotExistsException.class})
+            UserNotExistsException.class,
+            MessageNotFoundException.class,
+            MessageCanNotBeNullException.class,
+    })
     public ResponseEntity<ErrorResponse> handleUsernameIsNotEqualsToken(RuntimeException ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();

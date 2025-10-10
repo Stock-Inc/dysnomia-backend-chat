@@ -1,7 +1,5 @@
 package org.example.backend.services;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.example.backend.dto.ConsoleCommandDTO;
 import org.example.backend.models.ConsoleCommand;
 import org.example.backend.repositories.ConsoleRepository;
@@ -14,8 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@Getter
-@Setter
 public class ConsoleService {
     private final ConsoleRepository consoleRepository;
 
@@ -25,26 +21,24 @@ public class ConsoleService {
     }
 
     public String findConsoleCommandByCommand(String command) {
-        LocalTime currentTime = LocalTime.now();
-        if (command.startsWith("wheel")){
+        if (command.startsWith("wheel") && command.length() > 5) {
             command = command.substring(5);
-            List<String> commands = List.of(command.split(","));
+            List<String> commands = List.of(command.replace(" ", "").split(","));
             int randomNumber = new Random().nextInt(commands.size());
             return commands.get(randomNumber);
+        } else if (command.startsWith("wheel") && command.length() <= 5) {
+            return "Вы не ввели кто играет!";
         }
-        if (command.isEmpty() || consoleRepository.findConsoleCommandByCommand(command) == null)
+        ConsoleCommand dbCommand = consoleRepository.findConsoleCommandByCommand(command);
+        if (command.isEmpty() || dbCommand == null)
             return "Неправильная команда!";
-        if (command.equals("картель")) {
-            return consoleRepository.findConsoleCommandByCommand(command).getResult() + " " +
-                    +currentTime.getHour() + ":" + currentTime.getMinute();
-        }
-        return consoleRepository.findConsoleCommandByCommand(command).getResult();
+        return dbCommand.getResult();
     }
 
-    public List<ConsoleCommandDTO> findAllCommands(){
-        List<ConsoleCommand> listCommands = consoleRepository.findAllCommands(0);
+    public List<ConsoleCommandDTO> findAllCommands() {
+        List<ConsoleCommand> listCommands = consoleRepository.findAllCommands();
         List<ConsoleCommandDTO> listCommandsDTO = new ArrayList<>();
-        for (ConsoleCommand consoleCommand : listCommands){
+        for (ConsoleCommand consoleCommand : listCommands) {
             ConsoleCommandDTO consoleCommandDTO = new ConsoleCommandDTO();
             consoleCommandDTO.setCommand(consoleCommand.getCommand());
             consoleCommandDTO.setDescription(consoleCommand.getDescription());

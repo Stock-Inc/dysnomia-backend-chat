@@ -2,6 +2,8 @@ package org.example.backend.services;
 
 import lombok.Builder;
 import lombok.Data;
+import org.example.backend.exceptions.MessageCanNotBeNullException;
+import org.example.backend.exceptions.MessageNotFoundException;
 import org.example.backend.models.Message;
 import org.example.backend.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +22,23 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
+    public void save(Message message) {
+        if (message == null)
+            throw new MessageCanNotBeNullException("Message is null");
+        messageRepository.save(message);
+    }
+
     public List<Message> findLast100Message() {
         return messageRepository.findLast100Message();
     }
 
-
-    public void save(Message message) {
-        messageRepository.save(message);
-    }
-
     public Message findById(int id) {
-        return messageRepository.findById(id);
+        if (id <= 0)
+            throw new MessageNotFoundException("No message with this ID was found.");
+        Message message = messageRepository.findById(id);
+        if (message == null) {
+            throw new MessageNotFoundException("No message with this ID was found.");
+        }
+        return message;
     }
 }
