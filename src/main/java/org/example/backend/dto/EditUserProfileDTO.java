@@ -11,7 +11,7 @@ public class EditUserProfileDTO {
             description = "User's display name",
             example = "John Doe"
     )
-    private String display_name;
+    private String displayName;
 
     @Schema(
             description = "User biography or description",

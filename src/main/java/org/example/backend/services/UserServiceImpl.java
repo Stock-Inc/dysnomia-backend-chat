@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     public void updateProfile(EditUserProfileDTO userDTO, String username) {
         User user = userRepository.findUsersByUsername(username);
-        user.setDisplayName(userDTO.getDisplay_name());
+        user.setDisplayName(userDTO.getDisplayName());
         user.setBio(userDTO.getBio());
         userRepository.save(user);
     }
