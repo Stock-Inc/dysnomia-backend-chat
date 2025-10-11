@@ -27,17 +27,17 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", length = 64, unique = true)
+    @Column(name = "username", length = 64,nullable = false, unique = true)
     @NotNull
     @Size(min = 1, max = 64)
     private String username;
 
-    @Column(name = "password", length = 255)
+    @Column(name = "password", length = 255, nullable = false)
     @NotNull
     @Size(min = 1, max = 255)
     private String password;
 
-    @Column(name = "email", length = 255, unique = true)
+    @Column(name = "email", length = 255, nullable = false, unique = true)
     @NotNull
     @Email
     @Size(min = 1, max = 255)
