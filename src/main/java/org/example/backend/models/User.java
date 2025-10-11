@@ -1,8 +1,8 @@
 package org.example.backend.models;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", length = 64,nullable = false, unique = true)
+    @Column(name = "username", length = 64, nullable = false, unique = true)
     @NotNull
     @Size(min = 1, max = 64)
     private String username;

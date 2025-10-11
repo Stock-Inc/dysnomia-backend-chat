@@ -2,6 +2,7 @@ package org.example.backend.handler;
 
 import org.example.backend.exceptions.*;
 import org.example.backend.models.ErrorResponse;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +20,7 @@ public class ExceptionsHandler {
                                 HeaderIsInvalidException.class,
                                 UserPasswordNotMatchException.class,
                                 TokenInvalidException.class,
+                                DataIntegrityViolationException.class
                         })
     public ResponseEntity<ErrorResponse> handleUsernameAlreadyExists(RuntimeException ex) {
         ErrorResponse errorResponse = ErrorResponse
@@ -42,12 +44,12 @@ public class ExceptionsHandler {
                 .body(errorResponse);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleException(DataIntegrityViolationException ex) {
         ErrorResponse errorResponse = ErrorResponse
-                .builder().errorMessage(ex.getMessage()).build();
+                .builder().errorMessage("username must contain only english letters or numbers!").build();
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);
     }
 }

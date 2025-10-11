@@ -25,16 +25,13 @@ import java.util.function.Function;
 public class JwtService {
 
     private final UserServiceImpl userServiceImpl;
+    private final TokenRepository tokenRepository;
     @Value("${token.signing.key}")
     private String secretKey;
-
     @Value("${access_token_expiration}")
     private long accessTokenExpiration;
-
     @Value("${refresh_token_expiration}")
     private long refreshTokenExpiration;
-
-    private final TokenRepository tokenRepository;
 
     public JwtService(TokenRepository tokenRepository, UserServiceImpl userServiceImpl) {
         this.tokenRepository = tokenRepository;
@@ -55,7 +52,6 @@ public class JwtService {
 
 
     public boolean isValidRefresh(String token, User user) {
-
         String username = extractUsername(token);
 
         boolean isValidRefreshToken = tokenRepository.findByRefreshToken(token)
@@ -65,7 +61,6 @@ public class JwtService {
                 && isAccessTokenExpired(token)
                 && isValidRefreshToken;
     }
-
 
     private boolean isAccessTokenExpired(String token) {
         return !extractExpiration(token).before(new Date());
@@ -78,7 +73,6 @@ public class JwtService {
             throw new TokenInvalidException();
         }
     }
-
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
