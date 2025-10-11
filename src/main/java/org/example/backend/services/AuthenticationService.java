@@ -79,7 +79,6 @@ public class AuthenticationService {
         return new AuthenticationResponseDto(accessToken, refreshToken);
     }
 
-
     public AuthenticationResponseDto authenticate(LoginRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -91,12 +90,14 @@ public class AuthenticationService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
 
-        List<Token> tokens = tokenRepository.findTokensByUserId(user.getId());
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
-        return new AuthenticationResponseDto(
-                tokens.get(tokens.size() - 1).getAccessToken(),
-                tokens.get(tokens.size() - 1).getRefreshToken()
-        );
+        revokeAllToken(user);
+
+        saveUserToken(accessToken, refreshToken, user);
+
+        return new AuthenticationResponseDto(accessToken, refreshToken);
     }
 
 
