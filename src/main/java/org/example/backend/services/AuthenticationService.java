@@ -5,6 +5,7 @@ import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
 import org.example.backend.exceptions.EmailAlreadyExistsException;
+import org.example.backend.exceptions.UserNotExistsException;
 import org.example.backend.exceptions.UsernameAlreadyExistsException;
 import org.example.backend.models.ErrorResponse;
 import org.example.backend.models.Role;
@@ -56,6 +57,7 @@ public class AuthenticationService {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException();
         }
+
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException();
         }
@@ -101,7 +103,7 @@ public class AuthenticationService {
     }
 
 
-    private void revokeAllToken(User user) {
+    void revokeAllToken(User user) {
         List<Token> validTokens = tokenRepository.findAllAccessTokenByUser(user.getId());
 
         if (!validTokens.isEmpty()) {
@@ -113,7 +115,7 @@ public class AuthenticationService {
     }
 
 
-    private void saveUserToken(String accessToken, String refreshToken, User user) {
+    void saveUserToken(String accessToken, String refreshToken, User user) {
         Token token = new Token();
 
         token.setAccessToken(accessToken);
@@ -157,7 +159,7 @@ public class AuthenticationService {
             return new ResponseEntity<>(new AuthenticationResponseDto(accessToken, refreshToken), HttpStatus.OK);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("It isn't an access token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("It isn't a refresh token");
     }
 
 }
