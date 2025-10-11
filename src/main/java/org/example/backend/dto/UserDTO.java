@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.backend.models.Role;
 
 @Data
 @Schema(description = "User information response")
@@ -28,7 +29,7 @@ public class UserDTO {
             example = "ROLE_USER",
             allowableValues = {"ROLE_USER", "ROLE_ADMIN"}
     )
-    private String role;
+    private Role role;
 
     @Schema(
             description = "User biography",

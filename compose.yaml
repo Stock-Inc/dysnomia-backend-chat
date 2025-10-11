@@ -11,7 +11,7 @@ services:
       - DB_URL=jdbc:postgresql://db:5432/femboy_db
       - DB_USERNAME=postgres
       - DB_PASSWORD=passwordpasswd
-      - DB_TOKEN=token
+      - DB_TOKEN=eioquweoqwiueqwoieqweuoqweiuqweoiqwueqweoiqwueqwoeiuqweoqiwewqoieuqwoeiqwueqoeiqioeuqwieqioweuoiqweoiuqwoiueqwouieoiquweoiuwqeouiqweouiqwuoieqwiuoeqwiuoeiuqoweouiqwoeuiqwiuoeqwuioeq
     depends_on:
       db:
         condition: service_healthy

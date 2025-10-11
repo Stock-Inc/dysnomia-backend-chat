@@ -40,9 +40,9 @@ public class UserServiceImpl implements UserService {
 
     public UserDTO findUsersByUsername(String username) {
         User user = userRepository.findUsersByUsername(username);
-        UserDTO userDTO = new UserDTO();
+        UserDTO userDTO = new UserDTO(user.getUsername(),user.getBio(),user.getRole(), user.getDisplayName());
         userDTO.setUsername(user.getUsername());
-        userDTO.setRole(String.valueOf(user.getRole()));
+        userDTO.setRole(user.getRole());
         return userDTO;
     }
 
@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUsersByUsername(username);
         return new UserDTO(
             user.getUsername(),
-            String.valueOf(user.getRole()),
             user.getBio(),
+            user.getRole(),
             user.getDisplayName()
         );
     }
