@@ -30,6 +30,16 @@ public class ExceptionsHandler {
                 .body(errorResponse);
     }
 
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleException(DataIntegrityViolationException ex) {
+        ErrorResponse errorResponse = ErrorResponse
+                .builder().errorMessage("username must contain only english letters or numbers!").build();
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
+    }
+    
     @ExceptionHandler(exception = {
             UsernameNotEqualsTokenException.class,
             UserNotExistsException.class,
@@ -41,15 +51,6 @@ public class ExceptionsHandler {
                 .builder().errorMessage(ex.getMessage()).build();
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleException(DataIntegrityViolationException ex) {
-        ErrorResponse errorResponse = ErrorResponse
-                .builder().errorMessage("username must contain only english letters or numbers!").build();
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);
     }
 }
