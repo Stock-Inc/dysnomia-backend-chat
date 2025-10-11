@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionsHandler {
 
     @ExceptionHandler(
-                        exception = {
-                                UsernameAlreadyExistsException.class,
-                                EmailAlreadyExistsException.class,
-                                AuthenticationException.class,
-                                HeaderIsInvalidException.class,
-                                UserPasswordNotMatchException.class,
-                                TokenInvalidException.class,
-                                DataIntegrityViolationException.class
-                        })
+            exception = {
+                    UsernameAlreadyExistsException.class,
+                    EmailAlreadyExistsException.class,
+                    AuthenticationException.class,
+                    HeaderIsInvalidException.class,
+                    UserPasswordNotMatchException.class,
+                    TokenInvalidException.class,
+                    DataIntegrityViolationException.class
+            })
     public ResponseEntity<ErrorResponse> handleUsernameAlreadyExists(RuntimeException ex) {
         ErrorResponse errorResponse = ErrorResponse
                 .builder().errorMessage(ex.getMessage()).build();
@@ -30,16 +30,6 @@ public class ExceptionsHandler {
                 .body(errorResponse);
     }
 
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleException(DataIntegrityViolationException ex) {
-        ErrorResponse errorResponse = ErrorResponse
-                .builder().errorMessage("username must contain only english letters or numbers!").build();
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(errorResponse);
-    }
-    
     @ExceptionHandler(exception = {
             UsernameNotEqualsTokenException.class,
             UserNotExistsException.class,
