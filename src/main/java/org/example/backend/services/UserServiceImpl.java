@@ -1,15 +1,12 @@
 package org.example.backend.services;
 
-import org.example.backend.config.PasswordConfig;
-import org.example.backend.config.SecurityConfig;
 import org.example.backend.dto.ChangeUserPasswordDTO;
 import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.dto.UserDTO;
-import org.example.backend.exceptions.UserPasswordNotMatch;
+import org.example.backend.exceptions.UserPasswordNotMatchException;
 import org.example.backend.models.User;
 import org.example.backend.repositories.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.example.backend.repositories.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,12 +37,12 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
     public UserDTO findUsersByUsername(String username) {
         User user = userRepository.findUsersByUsername(username);
-        UserDTO userDTO = new UserDTO();
-        System.out.println(user);
+        UserDTO userDTO = new UserDTO(user.getUsername(),user.getBio(),user.getRole(), user.getDisplayName());
         userDTO.setUsername(user.getUsername());
-        userDTO.setRole(String.valueOf(user.getRole()));
+        userDTO.setRole(user.getRole());
         return userDTO;
     }
 
@@ -58,9 +55,19 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    public UserDTO findUserInfo(String username) {
+        User user = userRepository.findUsersByUsername(username);
+        return new UserDTO(
+            user.getUsername(),
+            user.getBio(),
+            user.getRole(),
+            user.getDisplayName()
+        );
+    }
+
     public void updateProfile(EditUserProfileDTO userDTO, String username) {
         User user = userRepository.findUsersByUsername(username);
-        user.setDisplayName(userDTO.getDisplay_name());
+        user.setDisplayName(userDTO.getDisplayName());
         user.setBio(userDTO.getBio());
         userRepository.save(user);
     }
@@ -69,7 +76,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUsersByUsername(username);
 
         if (!passwordEncoder.matches(userDTO.getCurrent_password(), user.getPassword())) {
-            throw new UserPasswordNotMatch();
+            throw new UserPasswordNotMatchException();
         }
 
         user.setPassword(passwordEncoder.encode(userDTO.getNew_password()));

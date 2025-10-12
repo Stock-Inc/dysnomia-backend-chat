@@ -1,7 +1,6 @@
 package org.example.backend.services;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
@@ -80,7 +79,6 @@ public class AuthenticationService {
         return new AuthenticationResponseDto(accessToken, refreshToken);
     }
 
-
     public AuthenticationResponseDto authenticate(LoginRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -92,12 +90,14 @@ public class AuthenticationService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
 
-        List<Token> tokens = tokenRepository.findTokensByUserId(user.getId());
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
-        return new AuthenticationResponseDto(
-                tokens.get(tokens.size() - 1).getAccessToken(),
-                tokens.get(tokens.size() - 1).getRefreshToken()
-        );
+        revokeAllToken(user);
+
+        saveUserToken(accessToken, refreshToken, user);
+
+        return new AuthenticationResponseDto(accessToken, refreshToken);
     }
 
 
@@ -157,7 +157,7 @@ public class AuthenticationService {
             return new ResponseEntity<>(new AuthenticationResponseDto(accessToken, refreshToken), HttpStatus.OK);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("It isn't an access token");
     }
 
 }
