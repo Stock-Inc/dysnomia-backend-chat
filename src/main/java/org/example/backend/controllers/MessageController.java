@@ -53,7 +53,6 @@ public class MessageController {
             description = "Save new chat message and broadcast to all subscribers with Firebase notification"
     )
     @MessageMapping("/chat")
-    @SendTo("/topic/message")
     public Message savePersonMessage(@Payload MessageDTO messageDTO) {
         Message message = new Message(messageDTO);
         messageService.save(message);
