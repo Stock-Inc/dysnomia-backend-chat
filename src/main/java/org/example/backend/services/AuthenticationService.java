@@ -162,7 +162,7 @@ public class AuthenticationService {
             return new ResponseEntity<>(new AuthenticationResponseDto(accessToken, refreshToken), HttpStatus.OK);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("It isn't a refresh token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("It isn't a valid refresh token");
     }
 
 }

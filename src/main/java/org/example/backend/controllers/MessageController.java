@@ -6,15 +6,16 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.backend.config.FirebaseConfig;
 import org.example.backend.dto.MessageDTO;
 import org.example.backend.models.Message;
 import org.example.backend.services.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,16 +29,13 @@ import java.util.List;
         name = "Message Management",
         description = "WebSocket and REST operations for chat messages and notifications"
 )
+@AllArgsConstructor
 public class MessageController {
 
     private final MessageService messageService;
     private final FirebaseConfig firebaseConfig;
+    private SimpMessagingTemplate messagingTemplate;
 
-    @Autowired
-    public MessageController(MessageService messageService, FirebaseConfig firebaseConfig) {
-        this.messageService = messageService;
-        this.firebaseConfig = firebaseConfig;
-    }
 
     @Operation(
             summary = "Get message history via WebSocket",
@@ -62,6 +60,12 @@ public class MessageController {
         log.debug("the new message with id = {} has been saved in the db  ", message.getId());
         firebaseConfig.sendNotification(message.getName(), message.getMessage());
         log.debug("the notification has been sent");
+
+        messagingTemplate.convertAndSend("/topic/message", message);
+        messagingTemplate.convertAndSendToUser(
+                messageDTO.getName(),
+                "/queue/receipt",
+                "Message delivered successfully");
         return message;
     }
 

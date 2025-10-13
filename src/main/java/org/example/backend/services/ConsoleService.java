@@ -28,7 +28,7 @@ public class ConsoleService {
             List<String> commands = List.of(command.replace(" ", "").split(","));
             int randomNumber = new Random().nextInt(commands.size());
             return commands.get(randomNumber);
-        } else if (command.startsWith("wheel") && command.length() <= 5) {
+        } else if (command.startsWith("wheel")) {
             return "Вы не ввели кто играет!";
         }
         ConsoleCommand dbCommand = consoleRepository.findConsoleCommandByCommand(command);

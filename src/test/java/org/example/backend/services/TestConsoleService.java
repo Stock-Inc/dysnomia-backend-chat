@@ -50,7 +50,7 @@ public class TestConsoleService {
         String testResult = "";
         String resultEmpty = consoleService.findConsoleCommandByCommand(testResult);
         assertThat(resultEmpty).isEqualTo("Неправильная команда!");
-        verify(consoleRepository, times(1)).findConsoleCommandByCommand(testResult);
+        verify(consoleRepository, never()).findConsoleCommandByCommand(testResult);
     }
 
     @Test
