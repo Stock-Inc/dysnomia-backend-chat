@@ -32,7 +32,6 @@ public class Message {
     private int reply_id;
 
     @Column(name = "date")
-    @Builder.Default
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
 
     public Message(MessageDTO messageDTO) {
