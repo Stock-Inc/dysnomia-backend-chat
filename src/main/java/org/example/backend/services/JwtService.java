@@ -75,7 +75,12 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        try {
+            return extractClaim(token, Claims::getSubject);
+        }
+        catch (Exception ex) {
+            throw new TokenInvalidException();
+        }
     }
 
 
@@ -126,7 +131,6 @@ public class JwtService {
 
 
     private SecretKey getSgningKey() {
-
         byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
 
         return Keys.hmacShaKeyFor(keyBytes);

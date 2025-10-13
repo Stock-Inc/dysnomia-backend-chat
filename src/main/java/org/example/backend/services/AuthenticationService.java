@@ -5,6 +5,7 @@ import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
 import org.example.backend.exceptions.EmailAlreadyExistsException;
+import org.example.backend.exceptions.TokenInvalidException;
 import org.example.backend.exceptions.UserNotExistsException;
 import org.example.backend.exceptions.UsernameAlreadyExistsException;
 import org.example.backend.models.ErrorResponse;
@@ -104,6 +105,9 @@ public class AuthenticationService {
 
 
     void revokeAllToken(User user) {
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         List<Token> validTokens = tokenRepository.findAllAccessTokenByUser(user.getId());
 
         if (!validTokens.isEmpty()) {
@@ -136,8 +140,7 @@ public class AuthenticationService {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            ErrorResponse errorResponse = ErrorResponse.builder().errorMessage("Invalid token").build();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            throw new TokenInvalidException();
         }
 
         String token = authorizationHeader.substring(7);

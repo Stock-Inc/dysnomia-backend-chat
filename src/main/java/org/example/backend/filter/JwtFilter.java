@@ -1,12 +1,15 @@
 package org.example.backend.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.backend.services.JwtService;
+import org.example.backend.models.ErrorResponse;
 import org.example.backend.repositories.UserService;
+import org.example.backend.services.JwtService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,21 +36,40 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain) throws ServletException, IOException {
+            @NonNull FilterChain filterChain) {
 
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            try {
+                filterChain.doFilter(request, response);
+            } catch (Exception ex) {
+                ErrorResponse errorResponse = new ErrorResponse("Token invalid");
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.addHeader("error", ex.getMessage());
+            }
             return;
         }
         String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
+        String username = null;
+
+        try {
+            username = jwtService.extractUsername(token);
+        } catch (RuntimeException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Token invalid");
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.addHeader("error", ex.getMessage());
+        }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            UserDetails userDetails = userService.loadUserByUsername(username);
-
+            UserDetails userDetails = null;
+            try {
+                userDetails = userService.loadUserByUsername(username);
+            } catch (RuntimeException ex) {
+                ErrorResponse errorResponse = new ErrorResponse("Token invalid");
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.addHeader("error", ex.getMessage());
+            }
             if (jwtService.isValid(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -62,8 +84,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-
-        filterChain.doFilter(request, response);
-
+        try {
+            filterChain.doFilter(request, response);
+        }catch (Exception ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Token invalid");
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.addHeader("error", ex.getMessage());
+        }
     }
 }

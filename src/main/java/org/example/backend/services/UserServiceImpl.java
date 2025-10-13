@@ -3,6 +3,7 @@ package org.example.backend.services;
 import org.example.backend.dto.ChangeUserPasswordDTO;
 import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.dto.UserDTO;
+import org.example.backend.exceptions.UserNotExistsException;
 import org.example.backend.exceptions.UserPasswordNotMatchException;
 import org.example.backend.models.User;
 import org.example.backend.repositories.UserRepository;
@@ -38,12 +39,12 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    public UserDTO findUsersByUsername(String username) {
+    public User findUsersByUsername(String username) {
         User user = userRepository.findUsersByUsername(username);
-        UserDTO userDTO = new UserDTO(user.getUsername(),user.getBio(),user.getRole(), user.getDisplayName());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setRole(user.getRole());
-        return userDTO;
+        if (user == null) {
+            throw new UserNotExistsException();
+        }
+        return user;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDTO findUserInfo(String username) {
-        User user = userRepository.findUsersByUsername(username);
+        User user = findUsersByUsername(username);
         return new UserDTO(
             user.getUsername(),
             user.getBio(),
@@ -66,14 +67,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateProfile(EditUserProfileDTO userDTO, String username) {
-        User user = userRepository.findUsersByUsername(username);
+        User user = findUsersByUsername(username);
         user.setDisplayName(userDTO.getDisplayName());
         user.setBio(userDTO.getBio());
         userRepository.save(user);
     }
 
     public void changePassword(ChangeUserPasswordDTO userDTO, String username) {
-        User user = userRepository.findUsersByUsername(username);
+        User user = findUsersByUsername(username);
 
         if (!passwordEncoder.matches(userDTO.getCurrent_password(), user.getPassword())) {
             throw new UserPasswordNotMatchException();

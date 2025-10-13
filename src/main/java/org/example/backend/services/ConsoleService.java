@@ -21,6 +21,8 @@ public class ConsoleService {
     }
 
     public String findConsoleCommandByCommand(String command) {
+        if (command.isEmpty())
+            return "Неправильная команда!";
         if (command.startsWith("wheel") && command.length() > 5) {
             command = command.substring(5);
             List<String> commands = List.of(command.replace(" ", "").split(","));
@@ -30,7 +32,7 @@ public class ConsoleService {
             return "Вы не ввели кто играет!";
         }
         ConsoleCommand dbCommand = consoleRepository.findConsoleCommandByCommand(command);
-        if (command.isEmpty() || dbCommand == null)
+        if (dbCommand == null)
             return "Неправильная команда!";
         return dbCommand.getResult();
     }
