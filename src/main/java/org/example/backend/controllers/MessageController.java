@@ -59,12 +59,7 @@ public class MessageController {
         log.debug("the new message with id = {} has been saved in the db  ", message.getId());
         firebaseConfig.sendNotification(message.getName(), message.getMessage());
         log.debug("the notification has been sent");
-
         messagingTemplate.convertAndSend("/topic/message", message);
-        messagingTemplate.convertAndSendToUser(
-                messageDTO.getName(),
-                "/queue/receipt",
-                "Message delivered successfully");
         return message;
     }
 
