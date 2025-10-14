@@ -4,12 +4,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.example.backend.models.Role;
 
 @Data
 @Schema(description = "User information response")
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class UserDTO {
 
     @Schema(

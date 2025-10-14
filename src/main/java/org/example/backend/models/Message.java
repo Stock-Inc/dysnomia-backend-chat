@@ -1,6 +1,8 @@
 package org.example.backend.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,16 +24,21 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 64)
+    @Size(max = 64)
     private String name;
 
-    @Column(name = "message")
+    @Column(name = "message", nullable = false, length = 1024)
+    @NotNull
+    @Size(max = 1024)
     private String message;
 
-    @Column(name = "reply_id")
+    @Column(name = "reply_id", nullable = false)
+    @NotNull
     private int reply_id;
 
     @Column(name = "date")
+    @NotNull
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
 
     public Message(MessageDTO messageDTO) {
