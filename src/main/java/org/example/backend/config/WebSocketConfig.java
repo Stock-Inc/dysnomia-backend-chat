@@ -7,16 +7,21 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
+
+import java.util.UUID;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -38,19 +43,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
-    @Bean
-    public ApplicationListener<SessionSubscribeEvent> webSocketEventListener(
-            final AbstractSubscribableChannel clientOutboundChannel) {
-        return event -> {
-            Message<byte[]> message = event.getMessage();
-            StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(message);
-            if (stompHeaderAccessor.getReceipt() != null) {
-                stompHeaderAccessor.setHeader("stompCommand", StompCommand.RECEIPT);
-                stompHeaderAccessor.setReceiptId(stompHeaderAccessor.getReceipt());
-                clientOutboundChannel.send(
-                        MessageBuilder.createMessage(new byte[0], stompHeaderAccessor.getMessageHeaders())
-                );
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new ChannelInterceptor() {
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+
+                if (StompCommand.SEND.equals(accessor.getCommand())) {
+                    String receiptId = "receipt-" + System.currentTimeMillis() + "-" + UUID.randomUUID();
+                    accessor.setReceipt(receiptId);
+
+                    return MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders());
+                }
+
+                return message;
             }
-        };
+        });
     }
 }
