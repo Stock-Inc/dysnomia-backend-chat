@@ -12,6 +12,8 @@ import org.example.backend.config.FirebaseConfig;
 import org.example.backend.dto.MessageDTO;
 import org.example.backend.models.Message;
 import org.example.backend.services.MessageService;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -34,18 +36,19 @@ public class MessageController {
 
     private final MessageService messageService;
     private final FirebaseConfig firebaseConfig;
-    private SimpMessagingTemplate messagingTemplate;
+    private RabbitTemplate template;
+    private TopicExchange topic;
 
 
     @Operation(
             summary = "Get message history via WebSocket",
             description = "Retrieve last 100 messages through WebSocket connection"
     )
+
     @MessageMapping("/history")
-    @SendTo("/topic/history")
-    public List<Message> message() {
+    public void message() {
         log.info("the last 100 messages has been sent");
-        return messageService.findLast100Message();
+        template.convertAndSend(topic.getName(), messageService.findLast100Message());
     }
 
     @Operation(
@@ -59,7 +62,7 @@ public class MessageController {
         log.debug("the new message with id = {} has been saved in the db  ", message.getId());
         firebaseConfig.sendNotification(message.getName(), message.getMessage());
         log.debug("the notification has been sent");
-        messagingTemplate.convertAndSend("/topic/message", message);
+        template.convertAndSend(topic.getName(), message);
         return message;
     }
 
