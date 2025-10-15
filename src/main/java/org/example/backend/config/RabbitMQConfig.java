@@ -15,25 +15,23 @@ public class RabbitMQConfig {
         return new TopicExchange("topic");
     }
 
-    private static class ReceiverConfig{
-        @Bean
-        public Queue queue1(){
+    @Bean
+    public Queue queue1(){
             return new Queue("history");
         }
-
-        @Bean
-        public Queue queue2(){
-            return new Queue("message");
-        }
-
-        @Bean
-        public Binding binding1a(TopicExchange topic, Queue queue1){
-            return BindingBuilder.bind(queue1()).to(topic).with("history");
-        }
-
-        @Bean
-        public Binding binding2a(TopicExchange topic, Queue queue2){
-            return BindingBuilder.bind(queue2()).to(topic).with("message");
-        }
+    @Bean
+    public Queue queue2(){
+        return new Queue("message");
     }
+
+    @Bean
+    public Binding binding1a(TopicExchange topic, Queue queue1){
+        return BindingBuilder.bind(queue1()).to(topic).with("history");
+    }
+
+    @Bean
+    public Binding binding2a(TopicExchange topic, Queue queue2){
+        return BindingBuilder.bind(queue2()).to(topic).with("message");
+    }
+
 }
