@@ -17,11 +17,11 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue queue1(){
-            return new Queue("history");
+        return new Queue("history", true);
         }
     @Bean
     public Queue queue2(){
-        return new Queue("message");
+        return new Queue("message", true);
     }
 
     @Bean
