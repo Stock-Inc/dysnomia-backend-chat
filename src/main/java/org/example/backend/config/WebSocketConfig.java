@@ -25,6 +25,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableStompBrokerRelay("/topic")
+                .setSystemHeartbeatSendInterval(30000)
+                .setSystemHeartbeatReceiveInterval(30000)
                 .setRelayHost(host)
                 .setRelayPort(port)
                 .setSystemLogin(username)

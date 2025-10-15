@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
-    @Query("SELECT m FROM Message m ORDER BY m.id DESC LIMIT 100")
+    @Query(value = "SELECT * FROM message ORDER BY id DESC LIMIT 100", nativeQuery = true)
     List<Message> findLast100Message();
 
     @Query(
