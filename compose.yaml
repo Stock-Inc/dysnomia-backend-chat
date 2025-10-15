@@ -1,5 +1,18 @@
 services:
-
+  rabbit:
+    image: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "61613:61613"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    command: |
+      bash -c "
+        rabbitmq-plugins enable rabbitmq_management rabbitmq_stomp rabbitmq_web_stomp &&
+        rabbitmq-server"
   backend:
     container_name: backend
     restart: unless-stopped
@@ -13,10 +26,11 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=passwordpasswd
       - DB_TOKEN=eioquweoqwiueqwoieqweuoqweiuqweoiqwueqweoiqwueqwoeiuqweoqiwewqoieuqwoeiqwueqoeiqioeuqwieqioweuoiqweoiuqwoiueqwouieoiquweoiuwqeouiqweouiqwuoieqwiuoeqwiuoeiuqoweouiqwoeuiqwiuoeqwuioeq
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - STOMP_PORT=61613
     depends_on:
       db:
         condition: service_healthy
