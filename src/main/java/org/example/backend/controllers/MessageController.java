@@ -1,6 +1,5 @@
 package org.example.backend.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +16,6 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,11 +33,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MessageController {
 
-    private ObjectMapper objectMapper;
     private final MessageService messageService;
     private final FirebaseConfig firebaseConfig;
-    private RabbitTemplate template;
-    private TopicExchange topic;
+    private final SimpMessagingTemplate template;
 
 
     @Operation(
@@ -51,7 +47,7 @@ public class MessageController {
     public void message() {
         log.info("the last 100 messages has been sent");
         List<Message> messages = messageService.findLast100Message();
-        template.convertAndSend(topic.getName(), messages);
+        template.convertAndSend("/topic/history", messages);
     }
 
     @Operation(
@@ -65,7 +61,7 @@ public class MessageController {
         log.debug("the new message with id = {} has been saved in the db  ", message.getId());
         firebaseConfig.sendNotification(message.getName(), message.getMessage());
         log.debug("the notification has been sent");
-        template.convertAndSend(topic.getName(), message);
+        template.convertAndSend("/topic/message", message);
         return message;
     }
 
