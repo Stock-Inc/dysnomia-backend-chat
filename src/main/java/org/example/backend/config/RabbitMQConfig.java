@@ -33,5 +33,4 @@ public class RabbitMQConfig {
     public Binding binding2a(TopicExchange topic, Queue queue2){
         return BindingBuilder.bind(queue2()).to(topic).with("message");
     }
-
 }
