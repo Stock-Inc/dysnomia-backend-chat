@@ -51,8 +51,7 @@ public class MessageController {
     public void message() {
         log.info("the last 100 messages has been sent");
         List<Message> messages = messageService.findLast100Message();
-        String jsonMessages = objectMapper.writeValueAsString(messages);
-        template.convertAndSend(topic.getName(), jsonMessages);
+        template.convertAndSend(topic.getName(), messages);
     }
 
     @Operation(

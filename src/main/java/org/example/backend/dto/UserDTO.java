@@ -24,7 +24,7 @@ public class UserDTO {
             description = "User's display name",
             example = "John Doe"
     )
-    private String displayName;
+    private String bio;
 
     @Schema(
             description = "User role in the system",
@@ -37,5 +37,5 @@ public class UserDTO {
             description = "User biography",
             example = "Passionate about technology and coding"
     )
-    private String bio;
+    private String displayName;
 }
