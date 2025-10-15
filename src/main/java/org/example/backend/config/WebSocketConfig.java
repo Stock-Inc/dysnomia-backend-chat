@@ -18,6 +18,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private String host;
     @Value("${stomp_port}")
     private int port;
+    @Value("${spring.rabbitmq.virtual-host}")
+    private String virtualHost;
 
 
     @Override
@@ -28,7 +30,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setSystemLogin(username)
                 .setSystemPasscode(password)
                 .setClientLogin(username)
-                .setClientPasscode(password);
+                .setClientPasscode(password)
+                .setVirtualHost(virtualHost);
         registry.setApplicationDestinationPrefixes("/app");
     }
 
