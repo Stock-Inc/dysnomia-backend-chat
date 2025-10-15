@@ -1,5 +1,6 @@
 package org.example.backend.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,6 +35,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MessageController {
 
+    private ObjectMapper objectMapper;
     private final MessageService messageService;
     private final FirebaseConfig firebaseConfig;
     private RabbitTemplate template;
@@ -48,7 +50,9 @@ public class MessageController {
     @MessageMapping("/history")
     public void message() {
         log.info("the last 100 messages has been sent");
-        template.convertAndSend(topic.getName(), messageService.findLast100Message());
+        List<Message> messages = messageService.findLast100Message();
+        String jsonMessages = objectMapper.writeValueAsString(messages);
+        template.convertAndSend(topic.getName(), jsonMessages);
     }
 
     @Operation(
