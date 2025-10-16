@@ -14,6 +14,7 @@ import org.example.backend.models.Message;
 import org.example.backend.services.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,12 +41,12 @@ public class MessageController {
             summary = "Get message history via WebSocket",
             description = "Retrieve last 100 messages through WebSocket connection"
     )
-
     @MessageMapping("/history")
-    public void message() {
-        log.info("the last 100 messages has been sent");
+    @SendTo("/topic/history")
+    public List<Message> history() {
         List<Message> messages = messageService.findLast100Message();
-        template.convertAndSend("/topic/history", messages);
+        log.info("Sent last 100 messages");
+        return messages;
     }
 
     @Operation(
@@ -53,13 +54,13 @@ public class MessageController {
             description = "Save new chat message and broadcast to all subscribers with Firebase notification"
     )
     @MessageMapping("/chat")
+    @SendTo("/topic/message")
     public Message savePersonMessage(@Payload MessageDTO messageDTO) {
         Message message = new Message(messageDTO);
         messageService.save(message);
-        log.debug("the new message with id = {} has been saved in the db  ", message.getId());
+        log.debug("Saved message id = {}", message.getId());
         firebaseConfig.sendNotification(message.getName(), message.getMessage());
-        log.debug("the notification has been sent");
-        template.convertAndSend("/topic/message", message);
+        log.debug("Notification sent for message id = {}", message.getId());
         return message;
     }
 
