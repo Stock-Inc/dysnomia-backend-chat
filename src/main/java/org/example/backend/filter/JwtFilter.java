@@ -1,8 +1,6 @@
 package org.example.backend.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.models.ErrorResponse;
@@ -17,8 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -86,7 +82,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         try {
             filterChain.doFilter(request, response);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ErrorResponse errorResponse = new ErrorResponse("Token invalid");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.addHeader("error", ex.getMessage());

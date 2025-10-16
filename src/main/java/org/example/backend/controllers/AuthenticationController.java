@@ -40,11 +40,11 @@ public class AuthenticationController {
                     schema = @Schema(implementation = AuthenticationResponseDto.class),
                     examples = @ExampleObject(
                             value = """
-                {
-                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                  "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gZXhhbXBsZQ==",
-                }
-                """
+                                    {
+                                      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                      "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gZXhhbXBsZQ==",
+                                    }
+                                    """
                     )
             )
     )
@@ -64,12 +64,12 @@ public class AuthenticationController {
                     description = "User registration credentials",
                     required = true,
                     example = """
-                {
-                  "username": "user",
-                  "email": "user@example.com",
-                  "password": "password"
-                }
-                """
+                            {
+                              "username": "user",
+                              "email": "user@example.com",
+                              "password": "password"
+                            }
+                            """
             )
             @RequestBody @Valid RegistrationRequestDto registrationDto) {
         AuthenticationResponseDto registrationRequestDto = authenticationService.register(registrationDto);
@@ -87,11 +87,11 @@ public class AuthenticationController {
                     schema = @Schema(implementation = AuthenticationResponseDto.class),
                     examples = @ExampleObject(
                             value = """
-                {
-                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                  "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gZXhhbXBsZQ==",
-                }
-                """
+                                    {
+                                      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                      "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gZXhhbXBsZQ==",
+                                    }
+                                    """
                     )
             )
     )
@@ -116,11 +116,11 @@ public class AuthenticationController {
                     description = "User login credentials",
                     required = true,
                     example = """
-                {
-                  "username": "user",
-                  "password": "password"
-                }
-                """
+                            {
+                              "username": "user",
+                              "password": "password"
+                            }
+                            """
             )
             @RequestBody @Valid LoginRequestDto request) {
         AuthenticationResponseDto authenticationResponseDto = authenticationService.authenticate(request);
@@ -138,11 +138,11 @@ public class AuthenticationController {
                     schema = @Schema(implementation = AuthenticationResponseDto.class),
                     examples = @ExampleObject(
                             value = """
-                {
-                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                  "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gZXhhbXBsZQ=="
-                }
-                """
+                                    {
+                                      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                      "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gZXhhbXBsZQ=="
+                                    }
+                                    """
                     )
             )
     )

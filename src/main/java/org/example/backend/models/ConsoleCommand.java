@@ -20,17 +20,17 @@ public class ConsoleCommand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "command", length = 255,nullable = false)
+    @Column(name = "command", length = 255, nullable = false)
     @NotNull
-    @Size(max=255)
+    @Size(max = 255)
     private String command;
 
     @Column(name = "result", length = 255, nullable = false)
     @NotNull
-    @Size(max=255)
+    @Size(max = 255)
     private String result;
 
     @Column(name = "description", length = 255)
-    @Size(max=255)
+    @Size(max = 255)
     private String description;
 }

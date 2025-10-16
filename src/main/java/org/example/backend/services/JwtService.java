@@ -78,8 +78,7 @@ public class JwtService {
     public String extractUsername(String token) {
         try {
             return extractClaim(token, Claims::getSubject);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new TokenInvalidException();
         }
     }

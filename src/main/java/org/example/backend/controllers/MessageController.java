@@ -12,8 +12,6 @@ import org.example.backend.config.FirebaseConfig;
 import org.example.backend.dto.MessageDTO;
 import org.example.backend.models.Message;
 import org.example.backend.services.MessageService;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

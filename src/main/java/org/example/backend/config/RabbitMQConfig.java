@@ -13,26 +13,27 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Bean
-    public TopicExchange topic(){
+    public TopicExchange topic() {
         return new TopicExchange("topic");
     }
 
     @Bean
-    public Queue queue1(){
+    public Queue queue1() {
         return new Queue("history", true);
-        }
+    }
+
     @Bean
-    public Queue queue2(){
+    public Queue queue2() {
         return new Queue("message", true);
     }
 
     @Bean
-    public Binding binding1a(TopicExchange topic, Queue queue1){
+    public Binding binding1a(TopicExchange topic, Queue queue1) {
         return BindingBuilder.bind(queue1()).to(topic).with("history");
     }
 
     @Bean
-    public Binding binding2a(TopicExchange topic, Queue queue2){
+    public Binding binding2a(TopicExchange topic, Queue queue2) {
         return BindingBuilder.bind(queue2()).to(topic).with("message");
     }
 

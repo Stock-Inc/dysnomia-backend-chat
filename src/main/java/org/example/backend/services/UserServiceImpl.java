@@ -33,10 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByUsername(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
-        if (user != null) {
-            return true;
-        }
-        return false;
+        return user != null;
     }
 
     public User findUsersByUsername(String username) {
@@ -50,19 +47,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         User user = userRepository.findByEmail(email).orElse(null);
-        if (user != null) {
-            return true;
-        }
-        return false;
+        return user != null;
     }
 
     public UserDTO findUserInfo(String username) {
         User user = findUsersByUsername(username);
         return new UserDTO(
-            user.getUsername(),
-            user.getBio(),
-            user.getRole(),
-            user.getDisplayName()
+                user.getUsername(),
+                user.getBio(),
+                user.getRole(),
+                user.getDisplayName()
         );
     }
 

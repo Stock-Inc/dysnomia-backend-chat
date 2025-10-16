@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,8 +109,8 @@ public class TestAuthenticationService {
 
         AuthenticationResponseDto response = authenticationService.register(request);
 
-        assertEquals("access-token", response.getAccessToken());
-        assertEquals("refresh-token", response.getRefreshToken());
+        assertEquals("access-token", response.accessToken());
+        assertEquals("refresh-token", response.refreshToken());
 
         verify(passwordEncoder, times(1)).encode("password");
         verify(userRepository, times(1)).save(any(User.class));
@@ -130,8 +129,8 @@ public class TestAuthenticationService {
 
         AuthenticationResponseDto response = authenticationService.authenticate(loginRequestDto);
 
-        assertEquals("access-token", response.getAccessToken());
-        assertEquals("refresh-token", response.getRefreshToken());
+        assertEquals("access-token", response.accessToken());
+        assertEquals("refresh-token", response.refreshToken());
 
         verify(userRepository, times(1)).findByUsername(request.getUsername());
         verify(jwtService, times(1)).generateAccessToken(user);
@@ -292,8 +291,8 @@ public class TestAuthenticationService {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         AuthenticationResponseDto responseBody = (AuthenticationResponseDto) response.getBody();
         assertNotNull(responseBody);
-        assertThat(responseBody.getAccessToken()).isEqualTo("new-access-token");
-        assertThat(responseBody.getRefreshToken()).isEqualTo("new-refresh-token");
+        assertThat(responseBody.accessToken()).isEqualTo("new-access-token");
+        assertThat(responseBody.refreshToken()).isEqualTo("new-refresh-token");
 
 
         verify(httpServletRequest, times(1)).getHeader("Authorization");
