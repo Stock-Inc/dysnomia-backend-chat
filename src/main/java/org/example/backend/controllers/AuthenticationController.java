@@ -70,7 +70,8 @@ public class AuthenticationController {
                             """
             )
             @RequestBody @Valid RegistrationRequestDto registrationDto) {
-        AuthenticationResponseDto registrationRequestDto = authenticationService.register(registrationDto);
+        AuthenticationResponseDto registrationRequestDto
+                = authenticationService.register(registrationDto);
         return ResponseEntity.ok(registrationRequestDto);
     }
 
@@ -121,7 +122,8 @@ public class AuthenticationController {
                             """
             )
             @RequestBody @Valid LoginRequestDto request) {
-        AuthenticationResponseDto authenticationResponseDto = authenticationService.authenticate(request);
+        AuthenticationResponseDto authenticationResponseDto
+                = authenticationService.authenticate(request);
         return ResponseEntity.ok(authenticationResponseDto);
     }
 
