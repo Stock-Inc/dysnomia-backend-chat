@@ -2,6 +2,7 @@ package org.example.backend.services;
 
 import lombok.AllArgsConstructor;
 import org.example.backend.exceptions.HeaderIsInvalidException;
+import org.example.backend.exceptions.TokenInvalidException;
 import org.example.backend.models.Message;
 import org.example.backend.repositories.MessageRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class SearchService {
         }
 
         String token = authHeader.substring(7);
-        if (jwtService.isAccessTokenExpired(token)) {
-            throw new HeaderIsInvalidException();
+        if (!jwtService.isAccessTokenExpired(token)) {
+            throw new TokenInvalidException();
         }
 
         return messageRepository.findByQuery(query);
