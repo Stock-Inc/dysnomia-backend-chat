@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.example.backend.dto.AuthenticationResponseDto;
 import org.example.backend.dto.LoginRequestDto;
 import org.example.backend.dto.RegistrationRequestDto;
@@ -20,14 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 @Tag(name = "Authentication Controller",
         description = "Provides endpoints for user registration, login, and access token refresh operations")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
-
-    public AuthenticationController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
 
     @Operation(
             summary = "Register new user",

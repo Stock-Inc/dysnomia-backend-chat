@@ -22,6 +22,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class testUserController {
 
+    String username = "name";
+    String token = "token_value";
     @Mock
     private UserServiceImpl userServiceImpl;
     @Mock
@@ -30,9 +32,6 @@ public class testUserController {
     private HttpServletRequest request;
     @InjectMocks
     private UserController userController;
-
-    String username = "name";
-    String token = "token_value";
 
     @Test
     public void testGetExistUser() {
@@ -84,7 +83,7 @@ public class testUserController {
         doThrow(RuntimeException.class).when(jwtService).extractUsernameByToken(request);
 
         assertThatThrownBy(() -> userController.editProfile(editUserProfileDTO, request))
-        .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(RuntimeException.class);
 
         verify(jwtService, times(1)).extractUsernameByToken(request);
         verify(jwtService, never()).extractUsername(token);

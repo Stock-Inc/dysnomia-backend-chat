@@ -15,7 +15,6 @@ import org.example.backend.services.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,8 +33,6 @@ public class MessageController {
 
     private final MessageService messageService;
     private final FirebaseConfig firebaseConfig;
-    private final SimpMessagingTemplate template;
-
 
     @Operation(
             summary = "Get message history via WebSocket",
@@ -82,7 +79,7 @@ public class MessageController {
     )
     @GetMapping("/message/{id}")
     @ResponseBody
-    public Message messageOld(
+    public Message getOldMessage(
             @Parameter(
                     description = "Message ID",
                     required = true,

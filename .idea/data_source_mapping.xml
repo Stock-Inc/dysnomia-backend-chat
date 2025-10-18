@@ -4,5 +4,6 @@
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/1f27bc6d-5f16-4888-bc16-d0e0e20cb90d/console.sql" value="1f27bc6d-5f16-4888-bc16-d0e0e20cb90d" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/1f27bc6d-5f16-4888-bc16-d0e0e20cb90d/console_1.sql" value="1f27bc6d-5f16-4888-bc16-d0e0e20cb90d" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/1f27bc6d-5f16-4888-bc16-d0e0e20cb90d/console_2.sql" value="1f27bc6d-5f16-4888-bc16-d0e0e20cb90d" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/example/backend/repositories/MessageRepository.java" value="1f27bc6d-5f16-4888-bc16-d0e0e20cb90d" />
   </component>
 </project>
