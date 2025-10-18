@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-public class testMessageController {
+public class MessageControllerTest {
     Message message = new Message();
     MessageDTO messageDTO = new MessageDTO();
     List<Message> messages = new ArrayList<>();

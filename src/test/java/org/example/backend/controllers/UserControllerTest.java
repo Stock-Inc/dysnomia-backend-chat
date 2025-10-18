@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class testUserController {
+public class UserControllerTest {
 
     String username = "name";
     String token = "token_value";

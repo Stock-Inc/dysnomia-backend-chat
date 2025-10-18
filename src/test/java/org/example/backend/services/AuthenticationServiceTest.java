@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TestAuthenticationService {
+public class AuthenticationServiceTest {
     RegistrationRequestDto request = RegistrationRequestDto.builder()
             .username("username").password("password")
             .email("email").build();

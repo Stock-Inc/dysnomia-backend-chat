@@ -17,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TestMessageService {
+public class MessageServiceTest {
     @Mock
     private MessageRepository messageRepository;
 

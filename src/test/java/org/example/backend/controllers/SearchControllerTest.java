@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class testSearchController {
+public class SearchControllerTest {
     String authHeader;
     String query = "find";
     List<Message> messages = new ArrayList<>();
