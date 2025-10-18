@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.example.backend.dto.ChangeUserPasswordDTO;
 import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.dto.UserDTO;
@@ -21,14 +22,10 @@ import org.springframework.web.bind.annotation.*;
         name = "User Management",
         description = "Operations for user profile management and password changes"
 )
+@AllArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
     private final JwtService jwtService;
-
-    public UserController(UserServiceImpl userService, JwtService jwtService) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-    }
 
     @Operation(
             summary = "Get user by username",

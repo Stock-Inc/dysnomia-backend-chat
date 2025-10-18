@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.example.backend.dto.ConsoleCommandDTO;
 import org.example.backend.services.ConsoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,9 @@ import java.util.List;
         name = "Console Commands",
         description = "Operations for managing and retrieving console commands"
 )
+@AllArgsConstructor
 public class ConsoleController {
     private final ConsoleService consoleService;
-
-    @Autowired
-    public ConsoleController(ConsoleService consoleService) {
-        this.consoleService = consoleService;
-    }
 
     @CrossOrigin(origins = "*")
     @Operation(
