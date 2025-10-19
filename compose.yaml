@@ -22,7 +22,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - DB_URL=jdbc:postgresql://db:5432/femboy_db
+      - DB_URL=jdbc:postgresql://db:5432/dysnomia_db
       - DB_USERNAME=postgres
       - DB_PASSWORD=passwordpasswd
       - DB_TOKEN=eioquweoqwiueqwoieqweuoqweiuqweoiqwueqweoiqwueqwoeiuqweoqiwewqoieuqwoeiqwueqoeiqioeuqwieqioweuoiqweoiuqwoiueqwouieoiquweoiuwqeouiqweouiqwuoieqwiuoeqwiuoeiuqoweouiqwoeuiqwiuoeqwuioeq
@@ -42,12 +42,12 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=femboy_db
+      - POSTGRES_DB=dysnomia_db
       - POSTGRES_PASSWORD=passwordpasswd
     expose:
       - 5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "femboy_db" ]
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "dysnomia_db" ]
       interval: 10s
       timeout: 5s
       retries: 5
