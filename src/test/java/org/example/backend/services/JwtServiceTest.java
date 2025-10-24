@@ -40,7 +40,7 @@ public class JwtServiceTest {
     public void setUp() {
         String secret = "VGhpcy1pcy1hLXRlc3Qtc2VjcmV0LWtleS1mb3ItSldUUw";
 
-        jwtService = new JwtService(tokenRepository, userService);
+        jwtService = new JwtService(userService, tokenRepository);
         ReflectionTestUtils.setField(jwtService, "secretKey", secret);
         ReflectionTestUtils.setField(jwtService, "accessTokenExpiration", 360000L);
         ReflectionTestUtils.setField(jwtService, "refreshTokenExpiration", 2520000L);
