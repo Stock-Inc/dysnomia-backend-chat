@@ -1,5 +1,6 @@
 package org.example.backend.services;
 
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ConsoleCommandDTO;
 import org.example.backend.models.ConsoleCommand;
 import org.example.backend.repositories.ConsoleRepository;
@@ -11,13 +12,9 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class ConsoleService {
     private final ConsoleRepository consoleRepository;
-
-    @Autowired
-    public ConsoleService(ConsoleRepository consoleRepository) {
-        this.consoleRepository = consoleRepository;
-    }
 
     public String findConsoleCommandByCommand(String command) {
         if (command.isEmpty())
