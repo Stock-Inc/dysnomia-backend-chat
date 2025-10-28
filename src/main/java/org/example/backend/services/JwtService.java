@@ -133,7 +133,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String extractUsernameByToken(HttpServletRequest request) {
+    public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -145,7 +145,7 @@ public class JwtService {
 
     public void validateAccessToken(String username, HttpServletRequest request) {
 
-        String token = extractUsernameByToken(request);
+        String token = extractToken(request);
 
         if (!userServiceImpl.existsByUsername(username)) {
             throw new UserNotExistsException();

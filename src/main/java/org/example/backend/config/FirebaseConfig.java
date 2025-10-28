@@ -67,7 +67,6 @@ public class FirebaseConfig {
                 .putData("body", body)
                 .setTopic(topic)
                 .build();
-
         try {
             FirebaseMessaging.getInstance().send(message);
         } catch (FirebaseMessagingException e) {

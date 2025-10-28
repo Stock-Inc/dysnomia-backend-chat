@@ -92,7 +92,7 @@ public class UserController {
             )
             @RequestBody @Valid EditUserProfileDTO userDTO,
             HttpServletRequest request) {
-        String token = jwtService.extractUsernameByToken(request);
+        String token = jwtService.extractToken(request);
         String username = jwtService.extractUsername(token);
         userService.updateProfile(userDTO, username);
         return ResponseEntity.ok().build();
@@ -124,7 +124,7 @@ public class UserController {
             )
             @RequestBody @Valid ChangeUserPasswordDTO userDTO,
             HttpServletRequest request) {
-        String token = jwtService.extractUsernameByToken(request);
+        String token = jwtService.extractToken(request);
         String username = jwtService.extractUsername(token);
         userService.changePassword(userDTO, username);
         return ResponseEntity.ok().build();
