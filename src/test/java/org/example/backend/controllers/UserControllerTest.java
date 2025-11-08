@@ -62,7 +62,7 @@ public class UserControllerTest {
     public void testEditProfile() {
         EditUserProfileDTO editUserProfileDTO = new EditUserProfileDTO();
 
-        when(jwtService.extractUsernameByToken(request)).thenReturn(token);
+        when(jwtService.extractToken(request)).thenReturn(token);
         when(jwtService.extractUsername(token)).thenReturn(username);
 
 
@@ -71,7 +71,7 @@ public class UserControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNull(response.getBody());
 
-        verify(jwtService, times(1)).extractUsernameByToken(request);
+        verify(jwtService, times(1)).extractToken(request);
         verify(jwtService, times(1)).extractUsername(token);
         verify(userServiceImpl, times(1)).updateProfile(editUserProfileDTO, username);
     }
@@ -80,12 +80,12 @@ public class UserControllerTest {
     public void testUnSuccessEditProfile() {
         EditUserProfileDTO editUserProfileDTO = new EditUserProfileDTO();
 
-        doThrow(RuntimeException.class).when(jwtService).extractUsernameByToken(request);
+        doThrow(RuntimeException.class).when(jwtService).extractToken(request);
 
         assertThatThrownBy(() -> userController.editProfile(editUserProfileDTO, request))
                 .isInstanceOf(RuntimeException.class);
 
-        verify(jwtService, times(1)).extractUsernameByToken(request);
+        verify(jwtService, times(1)).extractToken(request);
         verify(jwtService, never()).extractUsername(token);
     }
 
@@ -93,7 +93,7 @@ public class UserControllerTest {
     public void testChangePassword() {
         ChangeUserPasswordDTO dto = new ChangeUserPasswordDTO();
 
-        when(jwtService.extractUsernameByToken(request)).thenReturn(token);
+        when(jwtService.extractToken(request)).thenReturn(token);
         when(jwtService.extractUsername(token)).thenReturn(username);
 
         ResponseEntity<?> response = userController.changePassword(dto, request);
@@ -101,7 +101,7 @@ public class UserControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNull(response.getBody());
 
-        verify(jwtService, times(1)).extractUsernameByToken(request);
+        verify(jwtService, times(1)).extractToken(request);
         verify(jwtService, times(1)).extractUsername(token);
         verify(userServiceImpl, times(1)).changePassword(dto, username);
     }
@@ -109,12 +109,12 @@ public class UserControllerTest {
     @Test
     public void testChangePasswordThrowsExceptionFromJwtService() {
         ChangeUserPasswordDTO dto = new ChangeUserPasswordDTO();
-        doThrow(RuntimeException.class).when(jwtService).extractUsernameByToken(request);
+        doThrow(RuntimeException.class).when(jwtService).extractToken(request);
 
         assertThatThrownBy(() -> userController.changePassword(dto, request))
                 .isInstanceOf(RuntimeException.class);
 
-        verify(jwtService, times(1)).extractUsernameByToken(request);
+        verify(jwtService, times(1)).extractToken(request);
         verify(jwtService, never()).extractUsername(token);
         verify(userServiceImpl, never()).changePassword(dto, username);
 

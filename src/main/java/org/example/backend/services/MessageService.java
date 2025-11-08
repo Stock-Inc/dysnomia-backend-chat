@@ -17,11 +17,6 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    @Autowired
-    public MessageService(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
-
     public void save(Message message) {
         if (message == null)
             throw new MessageCanNotBeNullException("Message is null");

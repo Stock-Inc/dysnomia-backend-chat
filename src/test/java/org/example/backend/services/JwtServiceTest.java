@@ -40,7 +40,7 @@ public class JwtServiceTest {
     public void setUp() {
         String secret = "VGhpcy1pcy1hLXRlc3Qtc2VjcmV0LWtleS1mb3ItSldUUw";
 
-        jwtService = new JwtService(tokenRepository, userService);
+        jwtService = new JwtService(userService, tokenRepository);
         ReflectionTestUtils.setField(jwtService, "secretKey", secret);
         ReflectionTestUtils.setField(jwtService, "accessTokenExpiration", 360000L);
         ReflectionTestUtils.setField(jwtService, "refreshTokenExpiration", 2520000L);
@@ -76,27 +76,27 @@ public class JwtServiceTest {
     }
 
     @Test
-    public void testExtractUsernameByToken_Success() {
+    public void testExtractToken_Success() {
         when(request.getHeader("Authorization")).thenReturn("Bearer token");
 
-        String token = jwtService.extractUsernameByToken(request);
+        String token = jwtService.extractToken(request);
 
         assertEquals("token", token);
     }
 
     @Test
-    public void testExtractUsernameByToken_HeaderIsNull() {
+    public void testExtractToken_HeaderIsNull() {
         when(request.getHeader("Authorization")).thenReturn(null);
 
-        assertThatThrownBy(() -> jwtService.extractUsernameByToken(request))
+        assertThatThrownBy(() -> jwtService.extractToken(request))
                 .isInstanceOf(HeaderIsInvalidException.class);
     }
 
     @Test
-    public void testExtractUsernameByToken_HeaderNotStartsWithBearer() {
+    public void testExtractToken_HeaderNotStartsWithBearer() {
         when(request.getHeader("Authorization")).thenReturn("notBearer token");
 
-        assertThatThrownBy(() -> jwtService.extractUsernameByToken(request))
+        assertThatThrownBy(() -> jwtService.extractToken(request))
                 .isInstanceOf(HeaderIsInvalidException.class);
     }
 

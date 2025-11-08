@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private String host;
     @Value("${stomp_port}")
     private int port;
-    @Value("${spring.rabbitmq.virtual-host}")
+    @Value("${VIRTUAL_HOST}")
     private String virtualHost;
 
 
@@ -35,6 +35,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setSystemHeartbeatSendInterval(10000)
                 .setSystemHeartbeatReceiveInterval(10000)
                 .setAutoStartup(true);
+
         registry.setApplicationDestinationPrefixes("/app");
     }
 

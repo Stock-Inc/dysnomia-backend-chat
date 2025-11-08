@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.example.backend.exceptions.HeaderIsInvalidException;
 import org.example.backend.exceptions.TokenInvalidException;
 import org.example.backend.exceptions.UserNotExistsException;
@@ -22,6 +23,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private final UserServiceImpl userServiceImpl;
@@ -32,11 +34,6 @@ public class JwtService {
     private long accessTokenExpiration;
     @Value("${refresh_token_expiration}")
     private long refreshTokenExpiration;
-
-    public JwtService(TokenRepository tokenRepository, UserServiceImpl userServiceImpl) {
-        this.tokenRepository = tokenRepository;
-        this.userServiceImpl = userServiceImpl;
-    }
 
     public boolean isValid(String token, UserDetails user) {
 
@@ -136,7 +133,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String extractUsernameByToken(HttpServletRequest request) {
+    public String extractToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -148,7 +145,7 @@ public class JwtService {
 
     public void validateAccessToken(String username, HttpServletRequest request) {
 
-        String token = extractUsernameByToken(request);
+        String token = extractToken(request);
 
         if (!userServiceImpl.existsByUsername(username)) {
             throw new UserNotExistsException();

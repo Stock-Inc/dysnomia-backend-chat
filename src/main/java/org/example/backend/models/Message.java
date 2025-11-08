@@ -11,6 +11,7 @@ import org.example.backend.dto.MessageDTO;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +41,10 @@ public class Message {
     @Column(name = "date")
     @NotNull
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
+
+    @Column(name = "conversation_id", nullable = false, updatable = false)
+    @NotNull
+    private UUID conversationId = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     public Message(MessageDTO messageDTO) {
         this.name = messageDTO.getName();

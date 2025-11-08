@@ -1,6 +1,7 @@
 package org.example.backend.services;
 
 import org.example.backend.exceptions.HeaderIsInvalidException;
+import org.example.backend.exceptions.TokenInvalidException;
 import org.example.backend.models.Message;
 import org.example.backend.repositories.MessageRepository;
 import org.junit.jupiter.api.Test;
@@ -42,12 +43,12 @@ public class SearchServiceTest {
     @Test
     public void testSearchMessagesWhenTokenExpired() {
         when(jwtService.isAccessTokenExpired(anyString()))
-                .thenReturn(true);
+                .thenReturn(false);
 
 
         assertThatThrownBy(() -> searchService
                 .searchMessages("Bearer token expired", ""))
-                .isInstanceOf(HeaderIsInvalidException.class);
+                .isInstanceOf(TokenInvalidException.class);
 
         verify(jwtService, times(1)).isAccessTokenExpired(anyString());
     }
@@ -55,7 +56,7 @@ public class SearchServiceTest {
     @Test
     public void testSearchMessagesWhenTokenNotExpiredAndListEmpty() {
         when(jwtService.isAccessTokenExpired(anyString()))
-                .thenReturn(false);
+                .thenReturn(true);
         when(messageRepository.findByQuery("string")).thenReturn(List.of());
 
         List<Message> list = searchService.searchMessages("Bearer token expired", "string");
@@ -70,7 +71,7 @@ public class SearchServiceTest {
     public void testSearchMessagesWhenTokenNotExpiredAndListNotEmpty() {
         Message message = new Message();
         when(jwtService.isAccessTokenExpired(anyString()))
-                .thenReturn(false);
+                .thenReturn(true);
         when(messageRepository.findByQuery("string")).thenReturn(List.of(message));
 
         List<Message> list = searchService.searchMessages("Bearer token expired", "string");

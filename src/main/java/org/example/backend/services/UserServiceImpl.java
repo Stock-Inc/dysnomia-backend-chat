@@ -1,5 +1,6 @@
 package org.example.backend.services;
 
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ChangeUserPasswordDTO;
 import org.example.backend.dto.EditUserProfileDTO;
 import org.example.backend.dto.UserDTO;
@@ -14,15 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
