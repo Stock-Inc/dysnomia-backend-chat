@@ -42,10 +42,6 @@ public class Message {
     @NotNull
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
 
-    @Column(name = "conversation_id", nullable = false, updatable = false)
-    @NotNull
-    private UUID conversationId = UUID.fromString("00000000-0000-0000-0000-000000000000");
-
     public Message(MessageDTO messageDTO) {
         this.name = messageDTO.getName();
         this.message = messageDTO.getMessage();
