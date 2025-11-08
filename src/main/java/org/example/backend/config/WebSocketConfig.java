@@ -18,7 +18,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private String host;
     @Value("${stomp_port}")
     private int port;
-
+    @Value("${VIRTUAL_HOST}")
+    private String virtualHost;
 
 
     @Override
@@ -30,9 +31,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setSystemPasscode(password)
                 .setClientLogin(username)
                 .setClientPasscode(password)
+                .setVirtualHost(virtualHost)
                 .setSystemHeartbeatSendInterval(10000)
                 .setSystemHeartbeatReceiveInterval(10000)
                 .setAutoStartup(true);
+
         registry.setApplicationDestinationPrefixes("/app");
     }
 
