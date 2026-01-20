@@ -42,9 +42,14 @@ public class Message {
     @NotNull
     private long date = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
 
-    public Message(MessageDTO messageDTO) {
+    @ManyToOne
+    @JoinColumn(name = "conversation_id")
+    private Conversation conversation;
+
+    public Message(MessageDTO messageDTO, Conversation conversation) {
         this.name = messageDTO.getName();
         this.message = messageDTO.getMessage();
         this.reply_id = messageDTO.getReply_id();
+        this.conversation = conversation;
     }
 }

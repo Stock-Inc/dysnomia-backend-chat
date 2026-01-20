@@ -28,6 +28,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue privateQueue() {
+        return new Queue("private", true);
+    }
+
+    @Bean
     public Binding binding1a(TopicExchange topic, Queue queue1) {
         return BindingBuilder.bind(queue1()).to(topic).with("history");
     }
@@ -35,6 +40,11 @@ public class RabbitMQConfig {
     @Bean
     public Binding binding2a(TopicExchange topic, Queue queue2) {
         return BindingBuilder.bind(queue2()).to(topic).with("message");
+    }
+
+    @Bean
+    public Binding privateBinding(TopicExchange topic, Queue privateQueue) {
+        return BindingBuilder.bind(privateQueue()).to(topic).with("private");
     }
 
     @Bean

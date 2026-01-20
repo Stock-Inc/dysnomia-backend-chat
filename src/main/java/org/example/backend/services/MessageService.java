@@ -1,7 +1,5 @@
 package org.example.backend.services;
 
-import lombok.Builder;
-import lombok.Data;
 import org.example.backend.exceptions.MessageCanNotBeNullException;
 import org.example.backend.exceptions.MessageNotFoundException;
 import org.example.backend.models.Message;
@@ -10,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-@Data
-@Builder
 public class MessageService {
     private final MessageRepository messageRepository;
+
+    @Autowired
+    public MessageService(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
 
     public void save(Message message) {
         if (message == null)
@@ -35,5 +37,9 @@ public class MessageService {
             throw new MessageNotFoundException("No message with this ID was found.");
         }
         return message;
+    }
+
+    public List<Message> findByConversationId(UUID conversationId) {
+        return messageRepository.findByConversationId(conversationId);
     }
 }

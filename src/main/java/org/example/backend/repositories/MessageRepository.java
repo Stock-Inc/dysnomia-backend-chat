@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
@@ -21,4 +22,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findByQuery(@Param("query") String query);
 
     Message findById(int id);
+
+    @Query("SELECT m FROM Message m WHERE m.conversation.id = :conversationId ORDER BY m.date ASC")
+    List<Message> findByConversationId(@Param("conversationId") UUID conversationId);
 }

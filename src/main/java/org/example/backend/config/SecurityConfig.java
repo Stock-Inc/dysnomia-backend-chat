@@ -72,6 +72,8 @@ public class SecurityConfig {
                     auth
                             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                             .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
+                            .requestMatchers("/private-history/**").authenticated()
+                            .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
                             .anyRequest().permitAll();
                 })
                 .userDetailsService(userService)
